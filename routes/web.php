@@ -16,5 +16,7 @@ Route::get('/', function () {
 });
 
 Route::get('admin', function () {
-    return view('admin.layouts.table');
+    return view('admin.test');
 });
+
+Route::get('reservations', 'ReservationsController@index');

@@ -49,10 +49,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <small>{{ $page_description or null }}</small>
             </h1>
             <!-- You can dynamically generate breadcrumbs here -->
-            <ol class="breadcrumb">
+            {{--  <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
                 <li class="active">Here</li>
-            </ol>
+            </ol>  --}}
         </section>
 
         <!-- Main content -->
@@ -61,7 +61,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @yield('content')
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
-
     <!-- Footer -->
     @include('admin.layouts.footer')
 
