@@ -35,10 +35,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
     <!-- Header -->
-    @include('admin.layouts.header')
+    @include('layouts.admin.header')
 
     <!-- Sidebar -->
-    @include('admin.layouts.sidebar')
+    @include('layouts.admin.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -62,7 +62,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
     <!-- Footer -->
-    @include('admin.layouts.footer')
+    @include('layouts.admin.footer')
 
 </div><!-- ./wrapper -->
 
