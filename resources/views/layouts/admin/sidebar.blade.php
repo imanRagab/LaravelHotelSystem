@@ -30,9 +30,15 @@
         <!-- Sidebar Menu -->
         <ul class="sidebar-menu">
             {{--  <li class="header">HEADER</li>  --}}
-            <!-- Optionally, you can add icons to the links -->
 
-            @yield('side')
+            <!-- Optionally, you can add icons to the links -->
+            <li><a href="/admin"><span>Dashboard</span></a></li>
+            <li><a href="/managers"><span>Managers</span></a></li>
+            <li><a href="/receptionists"><span>Receptionists</span></a></li>
+            <li><a href="/clients"><span>Clients</span></a></li>
+            <li><a href="/floors"><span>Floors</span></a></li>
+            <li><a href="/rooms"><span>Rooms</span></a></li>
+            <li><a href="/reservations"><span>Reservations</span></a></li>
             {{--  <li class="active"><a href="#"><span>Link</span></a></li>
             <li><a href="#"><span>Another Link</span></a></li>
             <li class="treeview">
