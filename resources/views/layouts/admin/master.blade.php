@@ -22,6 +22,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
     -->
     <link href="{{ asset("/bower_components/admin-lte/dist/css/skins/skin-blue.min.css")}}" rel="stylesheet" type="text/css" />
 
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.css">
+
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>
@@ -33,10 +35,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <div class="wrapper">
 
     <!-- Header -->
-    @include('admin.layout.header')
+    @include('layouts.admin.header')
 
     <!-- Sidebar -->
-    @include('admin.layout.sidebar')
+    @include('layouts.admin.sidebar')
 
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
@@ -47,10 +49,10 @@ scratch. This page gets rid of all links and provides the needed markup only.
                 <small>{{ $page_description or null }}</small>
             </h1>
             <!-- You can dynamically generate breadcrumbs here -->
-            <ol class="breadcrumb">
+            {{--  <ol class="breadcrumb">
                 <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
                 <li class="active">Here</li>
-            </ol>
+            </ol>  --}}
         </section>
 
         <!-- Main content -->
@@ -59,9 +61,8 @@ scratch. This page gets rid of all links and provides the needed markup only.
             @yield('content')
         </section><!-- /.content -->
     </div><!-- /.content-wrapper -->
-
     <!-- Footer -->
-    @include('admin.layout.footer')
+    @include('layouts.admin.footer')
 
 </div><!-- ./wrapper -->
 
@@ -78,5 +79,6 @@ scratch. This page gets rid of all links and provides the needed markup only.
 <!-- Optionally, you can add Slimscroll and FastClick plugins.
       Both of these plugins are recommended to enhance the
       user experience -->
+<script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.js"></script>
 </body>
 </html>

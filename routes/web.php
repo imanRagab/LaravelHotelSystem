@@ -16,8 +16,13 @@ Route::get('/', function () {
 });
 
 Route::get('admin', function () {
-    return view('admin.layout.admin_template');
+    return view('admin.test');
 });
+
+Route::get('reservations', 'ReservationsController@index');
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
