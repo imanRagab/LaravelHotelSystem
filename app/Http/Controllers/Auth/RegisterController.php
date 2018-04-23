@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -67,8 +69,13 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
+        $request=request();
         if(empty($data['avatar_image'])){
-            $data['avatar_image']="storage/1.jpg";
+            $data['avatar_image']="public/images/1.jpg";
+        }else{
+            $image=$request->file('avatar_image');
+            $path=$image->store('public/images');
+            $data['avatar_image']=$path;
         }
          $client=User::create([
             'name' => $data['name'],
