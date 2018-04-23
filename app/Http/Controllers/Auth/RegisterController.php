@@ -81,7 +81,6 @@ class RegisterController extends Controller
             
         ]);
         $client->assignRole('client');
-        dd($client);
         return $client;
     }
 }
