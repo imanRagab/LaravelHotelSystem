@@ -1,7 +1,7 @@
-@extends('reservations.layouts.master')
+@extends('layouts.admin.master')
 
 @section('content')
    
-    
+   
 
 @endsection

@@ -15,16 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', function () {
-    return view('admin.test');
+Route::get('index', function () {
+    return view('dashboard');
 });
 
 Route::get('reservations', 'ReservationsController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
-
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
-

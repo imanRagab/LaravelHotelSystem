@@ -28,11 +28,32 @@
         <!-- /.search form -->
 
         <!-- Sidebar Menu -->
+        <br><br>
         <ul class="sidebar-menu">
             {{--  <li class="header">HEADER</li>  --}}
-            <!-- Optionally, you can add icons to the links -->
 
-            @yield('side')
+            <!-- Optionally, you can add icons to the links -->
+            <li><a href="/admin"><span>Dashboard</span></a></li>
+            @role('admin')
+            <li><a href="/managers"><span>Managers</span></a></li>
+            @endrole
+
+            @hasanyrole('admin|manager')
+            <li><a href="/receptionists"><span>Receptionists</span></a></li>
+            @endhasanyrole
+            
+            @hasanyrole('admin|manager')
+            <li><a href="/floors"><span>Floors</span></a></li>
+            <li><a href="/rooms"><span>Rooms</span></a></li>
+            @endrole
+            
+            @hasanyrole('admin|manager|receptionist')
+            <li><a href="/clients"><span>Clients</span></a></li>
+            @endhasanyrole
+            
+            @hasanyrole('receptionist|client')
+            <li><a href="/reservations"><span>Reservations</span></a></li>
+            @endhasanyrole
             {{--  <li class="active"><a href="#"><span>Link</span></a></li>
             <li><a href="#"><span>Another Link</span></a></li>
             <li class="treeview">
