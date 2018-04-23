@@ -23,6 +23,7 @@ class AddColumnUsersTable extends Migration
             $table->string('mobile')->nullable();
             $table->integer('ban_state')->nullable();
             $table->integer('approved_state')->nullable();
+            $table->string('country')->nullable();
         });   
     }
 

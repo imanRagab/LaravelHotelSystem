@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -52,6 +54,10 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'mobile' => 'required|string|size:11',
+            'gender' =>'required|in:female,male',
+            'national_id' =>'required|integer',
+            'avatar_image.*' => 'mimes:jpg,jpeg',
         ]);
     }
 
@@ -63,10 +69,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $request=request();
+        if(empty($data['avatar_image'])){
+            $data['avatar_image']="public/images/1.jpg";
+        }else{
+            $image=$request->file('avatar_image');
+            $path=$image->store('public/images');
+            $data['avatar_image']=$path;
+        }
+         $client=User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'mobile' =>$data['mobile'],
+            'gender' => $data['gender'],
+            'national_id' => $data['national_id'],
+            'avatar_image' => $data['avatar_image'],
+            
         ]);
+        $client->assignRole('client');
+        return $client;
     }
 }
