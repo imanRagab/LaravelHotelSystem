@@ -41,15 +41,15 @@
             @hasanyrole('admin|manager')
             <li><a href="/receptionists"><span>Receptionists</span></a></li>
             @endhasanyrole
-
-            @hasanyrole('admin|manager|receptionist')
-            <li><a href="/clients"><span>Clients</span></a></li>
-            @endhasanyrole
             
-            @role('manager')
+            @hasanyrole('admin|manager')
             <li><a href="/floors"><span>Floors</span></a></li>
             <li><a href="/rooms"><span>Rooms</span></a></li>
             @endrole
+            
+            @hasanyrole('admin|manager|receptionist')
+            <li><a href="/clients"><span>Clients</span></a></li>
+            @endhasanyrole
             
             @hasanyrole('receptionist|client')
             <li><a href="/reservations"><span>Reservations</span></a></li>
