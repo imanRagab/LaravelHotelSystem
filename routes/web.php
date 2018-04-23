@@ -20,10 +20,9 @@ Route::get('admin', function () {
 });
 
 Route::get('reservations', 'ReservationsController@index');
-Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+Route::get('clients','Client\UsersController@index')->name('clients');
+
