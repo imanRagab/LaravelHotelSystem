@@ -8,15 +8,16 @@ use App\User;
 
 class UsersController extends Controller
 {
-    public function index(){
-
     /**
      * find clients user.
      *
      * @return User with role client 
      */
+    public function index(){
         return view ('clients/index',[
-            'clients'=>User::role('admin')->get() 
+            'clients'=>User::role('client')->get() 
         ]);
     }
+
+
 }

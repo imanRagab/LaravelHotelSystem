@@ -25,4 +25,5 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 Route::get('clients','Client\UsersController@index')->name('clients');
+Route::get('register','Client\RegistersController@show')->name('register');
 

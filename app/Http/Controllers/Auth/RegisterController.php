@@ -52,6 +52,10 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'mobile' => 'required|string|size:11',
+            'gender' =>'required|in:female,male',
+            'national_id' =>'required|integer',
+            'avatar_image.*' => 'mimes:jpg,jpeg',
         ]);
     }
 
@@ -63,10 +67,21 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        if(empty($data['avatar_image'])){
+            $data['avatar_image']="storage/1.jpg";
+        }
+         $client=User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'mobile' =>$data['mobile'],
+            'gender' => $data['gender'],
+            'national_id' => $data['national_id'],
+            'avatar_image' => $data['avatar_image'],
+            
         ]);
+        $client->assignRole('client');
+        dd($client);
+        return $client;
     }
 }
