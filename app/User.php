@@ -5,8 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-//use Tymon\JWTAuth\Contracts\JWTSubject;
-class User extends Authenticatable //implements JWTSubject
+use Tymon\JWTAuth\Contracts\JWTSubject;
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable,HasRoles;
 
@@ -16,7 +16,7 @@ class User extends Authenticatable //implements JWTSubject
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','mobile','gender','national_id','approved_state','created_by','ban_state','avatar_image'
     ];
 
     /**
@@ -47,4 +47,5 @@ class User extends Authenticatable //implements JWTSubject
     {
         return [];
     }
+
 }

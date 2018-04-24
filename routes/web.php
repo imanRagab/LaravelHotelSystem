@@ -20,8 +20,14 @@ Route::get('index', function () {
 });
 
 Route::get('reservations', 'ReservationsController@index');
+
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 Route::get('managers', 'ManagersController@index');
+
+Route::get('clients','Client\UsersController@index')->name('clients');
+Route::get('register','Client\RegistersController@show')->name('register');
+
