@@ -15,10 +15,11 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', function () {
+Route::get('index', function () {
     return view('dashboard');
 });
 
+<<<<<<< HEAD
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
@@ -47,3 +48,13 @@ Route::get('register','Client\RegistersController@show')->name('register');
 ///////////////////////////////////////////////
 
 
+=======
+Route::get('reservations', 'ReservationsController@index');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+Route::get('clients','Client\UsersController@index')->name('clients');
+Route::get('register','Client\RegistersController@show')->name('register');
+
+>>>>>>> 574be324eabadabb0444aaa21422617dfada49fb

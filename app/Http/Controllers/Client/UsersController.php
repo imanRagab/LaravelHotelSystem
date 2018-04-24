@@ -1,8 +1,10 @@
 <?php
 namespace App\Http\Controllers\Client;
+
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\User;
+
 class UsersController extends Controller
 {
     /**
@@ -15,4 +17,6 @@ class UsersController extends Controller
             'clients'=>User::role('client')->get() 
         ]);
     }
+
+
 }
