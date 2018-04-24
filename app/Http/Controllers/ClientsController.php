@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Spatie\Permission\Traits\HasRoles;
+use Yajra\Datatables\Datatables;
+
 use Auth;
 use App\User;
 use App\Room;
@@ -18,11 +20,19 @@ class ClientsController extends Controller
      */
     public function index()
     {
+        return view('clients.index');
+    }
+
+    /**
+     * Process datatables ajax request.
+     *
+     * @return \Illuminate\Http\JsonResponse
+     */
+    public function getData()
+    {
         $clients = Auth::user()->hasRole('admin|manager') ? User::role('client')->get() : 
                     User::role('client')->where('created_by', Auth::user()->id)->get();
-        return view('clients.index',[
-            'clients'=> $clients
-        ]);
+        return Datatables::of($clients)->make(true);
     }
 
     /**
@@ -56,4 +66,5 @@ class ClientsController extends Controller
     {
 
     }
+
 }
