@@ -18,7 +18,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        $clients = Auth::user()->hasRole('admin') ? User::role('client')->get() : 
+        $clients = Auth::user()->hasRole('admin|manager') ? User::role('client')->get() : 
                     User::role('client')->where('created_by', Auth::user()->id)->get();
         return view('clients.index',[
             'clients'=> $clients

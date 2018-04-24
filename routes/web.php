@@ -19,13 +19,31 @@ Route::get('admin', function () {
     return view('dashboard');
 });
 
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
+
+/////// Reservations Routes /////////////////////////
+
+///////////CRUD Routes /////////////////////////
+
 Route::get('reservations', 'ReservationsController@index');
+
+///////////////////////////////////////////////
+
+
+/////// Clients Routes /////////////////////////
+
+///////////CRUD Routes /////////////////////////
 Route::get('clients', 'ClientsController@index')->middleware('auth');
+Route::post('clients/delete', 'ClientsController@delete')->middleware('auth');
+Route::get('clients/{client}/edit', 'ClientsController@edit')->middleware('auth');
+Route::patch('clients/{client}', 'ClientsController@update') ;
 
-Auth::routes();
+///////////////////////////////////////////////
 
-Route::get('/home', 'HomeController@index')->name('home');
+Route::get('register','Client\RegistersController@show')->name('register');
 
-Auth::routes();
+///////////////////////////////////////////////
 
-Route::get('/home', 'HomeController@index')->name('home');
+
