@@ -118,7 +118,7 @@
                             <label for="avatar_image" class="col-md-4 col-form-label text-md-right">{{ __('Avatar_image') }}</label>
 
                             <div class="col-md-6">
-                                <input id="avatar_image" type="file" class="form-control{{ $errors->has('avatar_image') ? ' is-invalid' : '' }}" name="avatar_image" value="{{ old('avatar_image') }}" >
+                                <input id="avatar_image" type="file" class="form-control{{ $errors->has('avatar_image') ? ' is-invalid' : '' }}" name="avatar_image" value="{{ old('avatar_image') }}">
 
                                 @if ($errors->has('avatar_image'))
                                     <span class="invalid-feedback">
