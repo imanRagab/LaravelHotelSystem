@@ -23,3 +23,5 @@ Route::get('reservations', 'ReservationsController@index');
 Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::get('managers', 'ManagersController@index');
