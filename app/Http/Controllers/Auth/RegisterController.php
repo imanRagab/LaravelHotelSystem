@@ -30,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/index';
 
     /**
      * Create a new controller instance.
@@ -71,11 +71,12 @@ class RegisterController extends Controller
     {
         $request=request();
         if(empty($data['avatar_image'])){
-            $data['avatar_image']="public/images/1.jpg";
+            $data['avatar_image']="storage/images/avatar.jpg";
         }else{
             $image=$request->file('avatar_image');
             $path=$image->store('public/images');
-            $data['avatar_image']=$path;
+            $splitPath=explode('/', $path, 3);
+            $data['avatar_image']="storage/".$splitPath[1]."/".$splitPath[2];
         }
          $client=User::create([
             'name' => $data['name'],
