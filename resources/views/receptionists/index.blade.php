@@ -57,8 +57,8 @@ $(document).ready(function() {
         ]
 
     });
-    //oTable->addColumn('action','<a href="#edit-'.$user->id.'" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>');
-
+  
+ 
 });
 
 </script>

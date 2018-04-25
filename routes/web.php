@@ -10,7 +10,7 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-use DataTables;
+
 Route::get('/', function () {
     return view('welcome');
 });
@@ -43,3 +43,5 @@ Route::post('/receptionists','ReceptionistsController@store');
 Route::get('receptionists/{receptionist}/edit','ReceptionistsController@edit')->name('receptionists.edit');
 Route::put('receptionists/{id}','ReceptionistsController@update');
 
+/** Ban Or UnBan Receptionist */
+Route::post('receptionists/ban','ReceptionistsController@banOrunban');

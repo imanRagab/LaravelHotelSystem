@@ -8,6 +8,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
     <meta charset="UTF-8">
     <title>{{ $page_title or "AdminLTE Dashboard" }}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.2 -->
     <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
     <!-- Font Awesome Icons -->
@@ -48,7 +49,7 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
-<!-- <script type="text/javascript" src="{{ asset("/js/datatable.js")}}"> -->
+ <script type="text/javascript" src="{{ asset("/js/script.js")}}"> 
 
 
 </script>

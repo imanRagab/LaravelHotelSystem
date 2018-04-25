@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\User;
 use Auth;
+//use Cog\Contracts\Ban\Bannable as BannableContract;
+//use Cog\Laravel\Ban\Traits\Bannable;
 
 class ReceptionistsController extends Controller
 {
@@ -26,17 +28,29 @@ class ReceptionistsController extends Controller
             
         })
         ->addColumn('action', function ($receptionist) {
-        
+        if($receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#" id="delete" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a   class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
+        }else{
+            return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a   class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>';
+        }
+           
             
         })->make(true);
      }elseif(Auth::user()->hasRole('manager')){
         return Datatables::of($receptionists)
         ->addColumn('action', function ($receptionist) {
-            if (Auth::id()==$receptionist->created_by){
+            if (Auth::id()==$receptionist->created_by && $receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#" id="delete" class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash"></i> Delete</a>';
+            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
+            }else{
+                return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+                <a class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>'; 
             }
         })->make(true);
      }
@@ -107,6 +121,16 @@ class ReceptionistsController extends Controller
         $receptionist->fill($request->only(['name','email','national_id']))->save();
 
         return redirect(route('receptionists'));
+    }
+
+    public function banOrunban(Request $request){
+        $receptionist = User::findOrFail($request->userId);
+        if($receptionist->isBanned()){
+            $receptionist->unban();
+        }else{
+            $receptionist->ban();
+        }
+        return response()->json(['response' => "success"]);
     }
 
 
