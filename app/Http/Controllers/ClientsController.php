@@ -70,7 +70,7 @@ class ClientsController extends Controller
                         ['created_by', Auth::user()->id],
                         ['approved_state', 1]
                     ]) -> get();
-        return Datatables::of(User::all())->make(true);
+        return Datatables::of($clients)->make(true);
     }
 
     ////////////Manage pending clients////

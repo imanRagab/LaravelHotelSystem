@@ -30,7 +30,7 @@
             columns: [
                 { data: 'client', name: 'client' },
                 { data: 'accompany_number', name: 'accompany_number' },
-                { data: 'room', name: 'room' },
+                { data: 'room->room_num', name: 'room' },
                 { data: 'paid_price', name: 'paid_price' }
             ]
         });        

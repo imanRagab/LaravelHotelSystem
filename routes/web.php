@@ -38,6 +38,13 @@ Route::post('update/{room}','RoomsController@update')->middleware('auth');
 Route::get('rooms/{room_num}/edit','RoomsController@edit')->middleware('auth');
 Route::delete('floors/{room_num}','RoomsController@destroy')->middleware('auth');
 
+Route::get('/home', 'HomeController@index')->name('home');
+
+
+Route::get('managers', 'ManagersController@index');
+
+Route::get('clients','Client\UsersController@index')->name('clients');
+
 /////// Reservations Routes /////////////////////////
 
 ///////////CRUD Routes /////////////////////////
