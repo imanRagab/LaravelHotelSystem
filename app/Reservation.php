@@ -10,8 +10,7 @@ class Reservation extends Model
         'room_id',
         'accompany_number',
         'paid_price',
-        'status'
-        
+        'status'        
         
     ];
 }

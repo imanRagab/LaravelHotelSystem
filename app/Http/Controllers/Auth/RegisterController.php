@@ -7,6 +7,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
+use Illuminate\Http\Request;
+
 
 class RegisterController extends Controller
 {
@@ -28,7 +30,7 @@ class RegisterController extends Controller
      *
      * @var string
      */
-    protected $redirectTo = '/home';
+    protected $redirectTo = '/index';
 
     /**
      * Create a new controller instance.
@@ -52,6 +54,10 @@ class RegisterController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users',
             'password' => 'required|string|min:6|confirmed',
+            'mobile' => 'required|string|size:11',
+            'gender' =>'required|in:female,male',
+            'national_id' =>'required|integer',
+            'avatar_image.*' => 'mimes:jpg,jpeg',
         ]);
     }
 
@@ -63,10 +69,26 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        return User::create([
+        $request=request();
+        if(empty($data['avatar_image'])){
+            $data['avatar_image']="storage/images/avatar.jpg";
+        }else{
+            $image=$request->file('avatar_image');
+            $path=$image->store('public/images');
+            $splitPath=explode('/', $path, 3);
+            $data['avatar_image']="storage/".$splitPath[1]."/".$splitPath[2];
+        }
+         $client=User::create([
             'name' => $data['name'],
             'email' => $data['email'],
             'password' => Hash::make($data['password']),
+            'mobile' =>$data['mobile'],
+            'gender' => $data['gender'],
+            'national_id' => $data['national_id'],
+            'avatar_image' => $data['avatar_image'],
+            
         ]);
+        $client->assignRole('client');
+        return $client;
     }
 }

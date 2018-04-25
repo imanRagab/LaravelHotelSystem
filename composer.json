@@ -9,10 +9,11 @@
         "fideloper/proxy": "^4.0",
         "laravel/framework": "5.6.*",
         "laravel/tinker": "^1.0",
-        "yajra/laravel-datatables-oracle": "~8.0",
+        "rinvex/country": "^3.1",
         "spatie/laravel-permission": "^2.11",
-        "tymon/jwt-auth": "^0.5.12"
-       
+
+        "tymon/jwt-auth": "^0.5.12",
+        "yajra/laravel-datatables-oracle": "^8.0"
     },
     "require-dev": {
         "filp/whoops": "^2.0",
