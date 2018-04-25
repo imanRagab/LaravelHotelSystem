@@ -1,9 +1,6 @@
 <!DOCTYPE html>
-<!--
-This is a starter template page. Use this page to start your new project from
-scratch. This page gets rid of all links and provides the needed markup only.
--->
 <html>
+
 <head>
     <meta charset="UTF-8">
     <title>{{ $page_title or "AdminLTE Dashboard" }}</title>
@@ -49,47 +46,111 @@ scratch. This page gets rid of all links and provides the needed markup only.
 
 <script type="text/javascript" charset="utf8" src="https://cdn.datatables.net/1.10.16/js/jquery.dataTables.min.js"></script>
 
- <script type="text/javascript" src="{{ asset("/js/script.js")}}"> 
+ <!-- AdminLTE App -->
+<script src="{{ asset ("/vendor/laravel-admin/AdminLTE/dist/js/app.min.js") }}" type="text/javascript"></script>
+<script type="text/javascript" src="{{ asset("/js/script.js")}}"> </script>
+<script>
+        /////////////////////////////////////////////////////////////////
+            ////Ajax function for delete/////
 
+        HTMLElement.prototype.del = function(delUrl){
+            var resp = confirm("Are you sure you want to delete this post?");
+            alert(delUrl)
+            if (resp == true) {
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
+                $.ajax(
+                {
+                    url: delUrl,
+                    type: 'delete',
+                    dataType: "JSON",
+                    data: "{}",
+                    success: function (response)
+                    {
+                            window.location.href = "/clients/approved";
+                        
+                        console.log(response); // see the reponse sent
+                    },
+                    error: function(xhr) {
+                    console.log(xhr.responseText); 
+                }
+                
+                });
+            }
+        }
+        //////////////////////////////////////////////
+        ////Ajax function for approve/////
 
-</script>
+        HTMLElement.prototype.approve = function(id){
+            var resp = confirm("Approve this client?");
+            var url = '/clients/' + id + '/approve';
+            if (resp == true) {
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
+                $.ajax(
+                {
+                    url: url,
+                    type: 'post',
+                    dataType: "JSON",
+                    data: "{}",
+                    success: function (response)
+                    {
+                            window.location.href = "/clients/manage";
+                        
+                        console.log(response); // see the reponse sent
+                    },
+                    error: function(xhr) {
+                    console.log(xhr.responseText); 
+                }
+                
+                });
+            }
+        }
 
+        //////////////////////////////////////////////////////////
+            
+        </script>
+        @stack('js')
 </head>
 <body class="skin-blue">
 <div class="wrapper">
 
-    <!-- Header -->
-    @include('layouts.admin.header')
 
-    <!-- Sidebar -->
-    @include('layouts.admin.sidebar')
+            <!-- Header -->
+            @include('layouts.admin.header')
 
-    <!-- Content Wrapper. Contains page content -->
-    <div class="content-wrapper">
-        <!-- Content Header (Page header) -->
-        <section class="content-header">
-            <h1>
-                {{ $page_title or "Page Title" }}
-                <small>{{ $page_description or null }}</small>
-            </h1>
-            
-            <!-- You can dynamically generate breadcrumbs here -->
-            {{--  <ol class="breadcrumb">
-                <li><a href="#"><i class="fa fa-dashboard"></i> Level</a></li>
-                <li class="active">Here</li>
-            </ol>  --}}
-        </section>
+            <!-- Sidebar -->
+            @include('layouts.admin.sidebar')
 
-        <!-- Main content -->
-        <section class="content">
-            <!-- Your Page Content Here -->
-            @yield('content')
-        </section><!-- /.content -->
-    </div><!-- /.content-wrapper -->
-    <!-- Footer -->
-    @include('layouts.admin.footer')
 
-</div><!-- ./wrapper -->
+            <!-- Content Wrapper. Contains page content -->
+            <div class="content-wrapper">
+                <!-- Content Header (Page header) -->
+                <section class="content-header">
+                    <h1>
+                        {{ $page_title or "Page Title" }}
+                        <small>{{ $page_description or null }}</small>
+                    </h1>
+                </section>
+
+
+                <!-- Main content -->
+                <section class="content">
+                    <!-- Your Page Content Here -->
+                    @yield('content')
+                </section><!-- /.content -->
+            </div><!-- /.content-wrapper -->
+            <!-- Footer -->
+            @include('layouts.admin.footer')
+
+        </div><!-- ./wrapper -->
 
 </body>
+
 </html>
