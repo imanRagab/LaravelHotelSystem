@@ -74,7 +74,6 @@
 
         HTMLElement.prototype.del = function(delUrl){
             var resp = confirm("Are you sure you want to delete this post?");
-            alert(delUrl)
             if (resp == true) {
                 $.ajaxSetup({
                 headers: {

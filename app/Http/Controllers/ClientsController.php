@@ -5,7 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Spatie\Permission\Traits\HasRoles;
 use Yajra\Datatables\Datatables;
+use Illuminate\Support\Facades\DB;
 
+use Cache;
 use Auth;
 use App\User;
 use App\Room;
@@ -33,7 +35,14 @@ class ClientsController extends Controller
     public function edit(User $client)
     {
 
-        return view('clients.edit', ['client' => $client]);
+        if(!Cache::get('countries')){
+            Cache::put('countries', countries(), 1440);
+       }
+
+        return view('clients.edit', [
+            'client' => $client,
+            'countries'=> Cache::get('countries')
+            ]);
 
     }
 
@@ -70,7 +79,7 @@ class ClientsController extends Controller
                         ['created_by', Auth::user()->id],
                         ['approved_state', 1]
                     ]) -> get();
-        return Datatables::of(User::all())->make(true);
+        return Datatables::of($clients)->make(true);
     }
 
     ////////////Manage pending clients////
@@ -108,9 +117,13 @@ class ClientsController extends Controller
 
     public function getReservationsData(){
 
-        return Datatables::of(Reservation::all())->make(true);
-        
+        $reservation = DB::table('reservations')
+            ->select()
+            ->join('users','reservations.client_id','=','users.id')
+            ->join('rooms','reservations.room_id','=','rooms.id')
+            ->where('users.created_by', Auth::user()->id)
+            ->get();
+
+        return Datatables::of($reservation)->make(true);  
     }
-
-
 }
