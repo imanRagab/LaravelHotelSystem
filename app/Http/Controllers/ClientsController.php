@@ -9,6 +9,7 @@ use Yajra\Datatables\Datatables;
 use Auth;
 use App\User;
 use App\Room;
+use App\Reservation;
 
 class ClientsController extends Controller
 {
@@ -23,48 +24,93 @@ class ClientsController extends Controller
         return view('clients.index');
     }
 
-    /**
-     * Process datatables ajax request.
-     *
-     * @return \Illuminate\Http\JsonResponse
-     */
-    public function getData()
-    {
-        $clients = Auth::user()->hasRole('admin|manager') ? User::role('client')->get() : 
-                    User::role('client')->where('created_by', Auth::user()->id)->get();
-        return Datatables::of($clients)->make(true);
-    }
 
     /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function edit(User $client)
     {
 
+        return view('clients.edit', ['client' => $client]);
+
+    }
+
+    public function update(Request $request, User $client)
+    {
+        $new_client = $request->all();;
+        $client->update($new_client);
+
+        return redirect('clients/approved');
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Remove the specified resource from storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $client
      * @return \Illuminate\Http\Response
      */
-    public function store($request)
+    public function destroy(User $client)
     {
-
+        $client->delete();
+        return "true";
     }
 
     /**
-     * Display the specified resource.
+     * Process datatables ajax request.
      *
-     * @param  int  
-     * @return \Illuminate\Http\Response
+     * @return \Illuminate\Http\JsonResponse
      */
-    public function show()
+    public function getApprovedData()
     {
+        $clients = Auth::user()->hasRole('admin|manager') ? 
+                    User::role('client') -> where('approved_state', 1) -> get()
+                    : User::role('client') -> where([
+                        ['created_by', Auth::user()->id],
+                        ['approved_state', 1]
+                    ]) -> get();
+        return Datatables::of(User::all())->make(true);
+    }
+
+    ////////////Manage pending clients////
+    
+    public function manage(){
+
+        return view('clients.manage');
+    }
+
+    ////////////////////////////////////
+
+    public function getPendingData()
+    {
+        $clients = User::role('client') -> where('approved_state', 0) -> get();
+        return Datatables::of($clients)->make(true);
+    }
+
+    //////////Approve Client////////////
+
+    public function approve(User $client){
+
+        $client->approved_state = 1;
+        $client->save();
+
+        return "true";
+    }
+
+    ////////////////////////////////////
+
+    public function showReservations(){
+
+        return view('clients.reservations');
 
     }
+
+    public function getReservationsData(){
+
+        return Datatables::of(Reservation::all())->make(true);
+        
+    }
+
 
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCountryIdUsersTable extends Migration
+class ModifyFloorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,10 @@ class AddCountryIdUsersTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('floors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('floor_num');
+        });
     }
 
     /**
