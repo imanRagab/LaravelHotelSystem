@@ -30,11 +30,11 @@ class ReceptionistsController extends Controller
         ->addColumn('action', function ($receptionist) {
         if($receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'" > Delete </i> </a>
             <a   class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
         }else{
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a   class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>';
         }
            
@@ -45,11 +45,11 @@ class ReceptionistsController extends Controller
         ->addColumn('action', function ($receptionist) {
             if (Auth::id()==$receptionist->created_by && $receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
             }else{
                 return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-                <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash" id="delete"> Delete </i> </a>
+                <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
                 <a class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>'; 
             }
         })->make(true);
@@ -122,7 +122,7 @@ class ReceptionistsController extends Controller
 
         return redirect(route('receptionists'));
     }
-
+/** Ban Or UnBan Receptionist */
     public function banOrunban(Request $request){
         $receptionist = User::findOrFail($request->userId);
         if($receptionist->isBanned()){
@@ -133,6 +133,19 @@ class ReceptionistsController extends Controller
         return response()->json(['response' => "success"]);
     }
 
+/**Delete Receptionist */
+
+public function destroy(Request $request){
+    $receptionist = User::findOrFail($request->userId);
+    if (file_exists(public_path() . '/'.$receptionist->avatar_image)){
+        unlink(public_path() . '/'.$receptionist->avatar_image) ;
+    }
+
+  
+    $receptionist->delete();
+    
+    return response()->json(['response' => "success"]);
+}
 
     
 

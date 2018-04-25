@@ -15,10 +15,12 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', function () {
-    return view('layouts.admin.master');
+
+Route::get('index', function () {
+    return view('dashboard');
 });
 
+Route::get('reservations', 'ReservationsController@index');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -56,6 +58,9 @@ Route::put('receptionists/{id}','ReceptionistsController@update');
 
 /** Ban Or UnBan Receptionist */
 Route::post('receptionists/ban','ReceptionistsController@banOrunban');
+/** Delete Receptionist */
+Route::post('receptionists/delete','ReceptionistsController@destroy');
+///////////////////////////////////////////
 
 
 Route::get('managers', 'ManagersController@index');
