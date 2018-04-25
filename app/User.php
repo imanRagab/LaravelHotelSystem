@@ -5,8 +5,8 @@ namespace App;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Spatie\Permission\Traits\HasRoles;
-//use Tymon\JWTAuth\Contracts\JWTSubject;
-class User extends Authenticatable //implements JWTSubject
+use Tymon\JWTAuth\Contracts\JWTSubject;
+class User extends Authenticatable implements JWTSubject
 {
     use Notifiable,HasRoles;
 
@@ -27,8 +27,6 @@ class User extends Authenticatable //implements JWTSubject
     protected $hidden = [
         'password', 'remember_token',
     ];
-
-
     /**
      * Get the identifier that will be stored in the subject claim of the JWT.
      *

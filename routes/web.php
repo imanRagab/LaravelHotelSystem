@@ -25,7 +25,10 @@ Auth::routes();
 
 Route::get('/home', 'HomeController@index')->name('home');
 
+
 Route::get('managers', 'ManagersController@index');
+
+Route::get('clients','Client\UsersController@index')->name('clients');
 
 /////// Reservations Routes /////////////////////////
 
@@ -52,5 +55,4 @@ Route::get('register','Client\RegistersController@show')->name('register');
 
 Route::get('clients', 'ClientsController@index')->middleware('auth');
 Route::get('getData', 'ClientsController@getData')->name('datatables.data')->middleware('auth');
-
 
