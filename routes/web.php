@@ -19,7 +19,7 @@ Route::get('index', function () {
     return view('dashboard');
 });
 
-Route::get('reservations', 'ReservationsController@index');
+Route::get('/home', 'HomeController@index')->name('home');
 
 Auth::routes();
 
@@ -29,5 +29,30 @@ Route::get('/home', 'HomeController@index')->name('home');
 Route::get('managers', 'ManagersController@index');
 
 Route::get('clients','Client\UsersController@index')->name('clients');
+
+/////// Reservations Routes /////////////////////////
+
+///////////CRUD Routes /////////////////////////
+
+Route::get('reservations', 'ReservationsController@index');
+
+///////////////////////////////////////////////
+
+
+/////// Clients Routes /////////////////////////
+
+///////////CRUD Routes /////////////////////////
+// Route::get('clients', 'ClientsController@index')->middleware('auth');
+Route::post('clients/delete', 'ClientsController@delete')->middleware('auth');
+Route::get('clients/{client}/edit', 'ClientsController@edit')->middleware('auth');
+Route::patch('clients/{client}', 'ClientsController@update') ;
+
+///////////////////////////////////////////////
+
 Route::get('register','Client\RegistersController@show')->name('register');
+
+///////////////////////////////////////////////
+
+Route::get('clients', 'ClientsController@index')->middleware('auth');
+Route::get('getData', 'ClientsController@getData')->name('datatables.data')->middleware('auth');
 
