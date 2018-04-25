@@ -10,8 +10,14 @@ class Room extends Model
         'room_num',
         'capacity',
         'price',
-        'status'
+        'status',
+        'created_by'
         
         
     ];
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    
 }

@@ -12,7 +12,8 @@
         "rinvex/country": "^3.1",
         "spatie/laravel-permission": "^2.11", 
         "yajra/laravel-datatables-oracle": "~8.0" ,
-        "tymon/jwt-auth":"dev-develop"
+        "tymon/jwt-auth":"dev-develop",
+        "doctrine/dbal": "~2.3"
 
     },
     "require-dev": {
