@@ -15,7 +15,8 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'name', 'email', 'password',
+        'name', 'email', 'password','national_id','created_by'
+        ,'avatar_image','gender','mobile','ban_state','approved_state'
     ];
 
     /**
@@ -26,4 +27,10 @@ class User extends Authenticatable
     protected $hidden = [
         'password', 'remember_token',
     ];
+
+//recursive relation
+   public function user() {
+        return $this->hasMany(User::class,  'id','created_by');
+     }
+  
 }
