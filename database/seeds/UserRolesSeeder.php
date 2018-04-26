@@ -2,6 +2,7 @@
 
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Role;
+
 class UserRolesSeeder extends Seeder
 {
     /**
