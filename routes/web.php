@@ -66,8 +66,12 @@ Route::post('receptionists/delete','ReceptionistsController@destroy');
 //Managers Routes
 
 /** dispaly all Managers */
-Route::get('/managers', 'ManagersController@index')->name('receptionists');
+Route::get('/managers', 'ManagersController@index')->name('managers');
 Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','uses'=>'ManagersController@get_all_managers']);
+
+/** create Managers */
+Route::get('managers/create','ManagersController@create')->name('managers.create');
+Route::post('/managers','ManagersController@store');
 
 ///////////////////////////////////////////
 

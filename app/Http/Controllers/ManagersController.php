@@ -28,5 +28,40 @@ class ManagersController extends Controller
     }
         
     }
+
+    //create new receptionist
+    public function create()
+    {
+        return view('managers.create');
+    }
+
+     //Store Post in database
+     public function store(Request $request)
+     {
+         if( $request->hasFile('image')) {
+             $image = $request->file('image');
+             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+             $request->image->storeAs('public/images',$filename);
+             $manager=User::create([
+                'name'=> $request->name,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'national_id'=>$request->number,
+                'avatar_image'=>$filename
+   
+            ]);
+         }else{
+            $manager=User::create([
+                'name'=> $request->name,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'created_by'=>Auth::id(),
+                'national_id'=>$request->number,
+            ]);
+         }
+         $manager->assignRole('manager');
+         return redirect('/managers'); 
+     }
     
 }
