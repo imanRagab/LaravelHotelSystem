@@ -22,7 +22,7 @@
                
                 <div class="form-group">
                   <label for="exampleInputNationalID">National ID</label>
-                  <input class="form-control" id="exampleInputNationalID"  type="number" name="national_id" value="{{$manager->national_id}}">
+                  <input class="form-control" id="exampleInputNationalID" pattern="[0-9]*" type="text" name="national_id" value="{{$manager->national_id}}">
                 </div>
                 <div class="form-group">
                 <label>Profile Image</label>
