@@ -21,6 +21,11 @@ class ManagersController extends Controller
         
      if(Auth::user()->hasRole('admin')){
         return Datatables::of($managers)
+        ->addColumn('created_at', function ($manager) {
+        
+            return $manager->created_date;
+            
+        })
         ->addColumn('action', function ($manager) {
           return '<a href="/managers/'.$manager->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
             <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$manager->id.'" > Delete </i> </a>';  

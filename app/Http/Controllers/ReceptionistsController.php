@@ -20,7 +20,13 @@ class ReceptionistsController extends Controller
         $receptionists = User::role('receptionist')->get();
         
      if(Auth::user()->hasRole('admin')){
-        return Datatables::of($receptionists)->addColumn('Manger_name', function ($receptionist) {
+        return Datatables::of($receptionists)
+        ->addColumn('created_at', function ($receptionist) {
+        
+            return $receptionist->created_date;
+            
+        })
+        ->addColumn('Manger_name', function ($receptionist) {
         
             return $receptionist->user[0]->name;
             
@@ -40,6 +46,11 @@ class ReceptionistsController extends Controller
         })->make(true);
      }elseif(Auth::user()->hasRole('manager')){
         return Datatables::of($receptionists)
+        ->addColumn('created_at', function ($receptionist) {
+        
+            return $receptionist->created_date;
+            
+        })
         ->addColumn('action', function ($receptionist) {
             if (Auth::id()==$receptionist->created_by && $receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
