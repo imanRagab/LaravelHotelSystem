@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddCountryIdUsersTable extends Migration
+class AddRoomIdReservationsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,10 @@ class AddCountryIdUsersTable extends Migration
      */
     public function up()
     {
-        //
+        Schema::table('reservations', function (Blueprint $table) {
+            $table->unsignedInteger('room_id');
+            $table->foreign('room_id')->references('id')->on('rooms');
+        });
     }
 
     /**
