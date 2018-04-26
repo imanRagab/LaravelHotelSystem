@@ -56,7 +56,7 @@ class RegisterController extends Controller
             'password' => 'required|string|min:6|confirmed',
             'mobile' => 'required|string|size:11',
             'gender' =>'required|in:female,male',
-            'national_id' =>'required|integer',
+            'country' =>'required|string',
             'avatar_image.*' => 'mimes:jpg,jpeg',
         ]);
     }
@@ -84,7 +84,7 @@ class RegisterController extends Controller
             'password' => Hash::make($data['password']),
             'mobile' =>$data['mobile'],
             'gender' => $data['gender'],
-            'national_id' => $data['national_id'],
+            'country' => $data['country'],
             'avatar_image' => $data['avatar_image'],
             
         ]);

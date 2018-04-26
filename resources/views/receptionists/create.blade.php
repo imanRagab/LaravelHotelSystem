@@ -1,35 +1,36 @@
 @extends('layouts.admin.master')
 
 @section('content')
+
+
+
 <div class="box box-primary">
             <div class="box-header with-border">
-              <h3 class="box-title">Edit Manager Info Page</h3>
+              <h3 class="box-title">Create receptionist Page</h3>
             </div>
             <!-- /.box-header -->
             <!-- form start -->
-            <form role="form" method="post" action="/managers/{{$manager->id}}"  enctype="multipart/form-data">
-            <input type="hidden" name="_method" value="PUT">
+            <form role="form" method="post" action="/receptionists" enctype="multipart/form-data">
             {{csrf_field()}}
               <div class="box-body">
               <div class="form-group">
                   <label for="exampleInputName">Name</label>
-                  <input class="form-control" id="exampleInputName"  type="text" name="name" value="{{$manager->name}}">
+                  <input class="form-control" id="exampleInputName" placeholder="Enter Receptionist Name" type="text" name="name">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputEmail1">Email address</label>
-                  <input class="form-control" id="exampleInputEmail1" type="email" name="email" value="{{$manager->email}}">
+                  <input class="form-control" id="exampleInputEmail1" placeholder="Enter email" type="email" name="email">
                 </div>
-               
+                <div class="form-group">
+                  <label for="exampleInputPassword1">Password</label>
+                  <input class="form-control" id="exampleInputPassword1" placeholder="Password" type="password" name="password">
+                </div>
                 <div class="form-group">
                   <label for="exampleInputNationalID">National ID</label>
-                  <input class="form-control" id="exampleInputNationalID"  type="number" name="national_id" value="{{$manager->national_id}}">
+                  <input class="form-control" id="exampleInputNationalID" placeholder="Enter Receptionist National_ID" type="number" name="national_id">
                 </div>
                 <div class="form-group">
-                <label>Profile Image</label>
-                <br/>
-                <img src="{{ asset($manager->avatar_image) }}" width="100" heigth="100"/>
-                <br/>
-                  <label for="exampleInputFile"> Upload New Image Profile</label>
+                  <label for="exampleInputFile">Image Upload</label>
                   <input id="exampleInputFile" type="file" name="avatar_image" multiple>
                   <p class="help-block">Uploaded Image must be an image with extensions jpg,jpeg.</p>
                 </div>
@@ -41,6 +42,6 @@
                 <button type="submit" class="btn btn-primary">Submit</button>
               </div>
             </form>
-          </div>  
+          </div>
 
 @endsection
