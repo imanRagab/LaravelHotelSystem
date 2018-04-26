@@ -1,6 +1,9 @@
 @extends('layouts.admin.master')
 
 @section('content')
+
+
+
 <div class="box box-primary">
             <div class="box-header with-border">
               <h3 class="box-title">Create New Manager Page</h3>
@@ -24,11 +27,11 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputNationalID">National ID</label>
-                  <input class="form-control" id="exampleInputNationalID" placeholder="Enter Manager National_ID" type="number" name="number">
+                  <input class="form-control" id="exampleInputNationalID" placeholder="Enter Manager National_ID" type="national_id" name="number">
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Image Upload</label>
-                  <input id="exampleInputFile" type="file" name="image" multiple>
+                  <input id="exampleInputFile" type="file" name="avatar_image" multiple>
                   <p class="help-block">Uploaded Image must be an image with extensions jpg,jpeg.</p>
                 </div>
                 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Auth;
 
@@ -41,18 +43,18 @@ class ManagersController extends Controller
     }
 
     //Store Post in database
-     public function store(Request $request)
+     public function store(UserStoreRequest $request)
      {
-         if( $request->hasFile('image')) {
-             $image = $request->file('image');
+         if( $request->hasFile('avatar_image')) {
+             $image = $request->file('avatar_image');
              $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
              $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
-             $request->image->storeAs('public/images',$filename);
+             $request->avatar_image->storeAs('public/images',$filename);
              $manager=User::create([
                 'name'=> $request->name,
                 'email'=>$request->email,
                 'password'=>bcrypt($request->password),
-                'national_id'=>$request->number,
+                'national_id'=>$request->national_id,
                 'avatar_image'=>'storage/images/'.$filename
    
             ]);
@@ -62,7 +64,7 @@ class ManagersController extends Controller
                 'email'=>$request->email,
                 'password'=>bcrypt($request->password),
                 'created_by'=>Auth::id(),
-                'national_id'=>$request->number,
+                'national_id'=>$request->national_id,
             ]);
          }
          $manager->assignRole('manager');
@@ -81,18 +83,18 @@ class ManagersController extends Controller
     }
 
     //update Manager in database
-    public function update(Request $request,  $id)
+    public function update(UserUpdateRequest $request,  $id)
     {
         $manager = User::findOrFail($id);
-         if( $request->hasFile('image')) {
+         if( $request->hasFile('avatar_image')) {
             if (file_exists(public_path() . '/'.$receptionist->avatar_image)){
                 unlink(public_path() . '/'.$manager->avatar_image) ;
             }
             
-            $image = $request->file('image');
+            $image = $request->file('avatar_image');
             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
-            $request->image->storeAs('public/images',$filename);
+            $request->avatar_image->storeAs('public/images',$filename);
             $manager->update(['avatar_image' => 'storage/images/'.$filename]);
         }
 
