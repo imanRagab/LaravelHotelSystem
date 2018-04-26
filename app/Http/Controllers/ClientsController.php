@@ -10,6 +10,7 @@ use Auth;
 use App\User;
 use App\Room;
 use App\Reservation;
+use App\Notifications\greetClient;
 
 class ClientsController extends Controller
 {
@@ -95,6 +96,8 @@ class ClientsController extends Controller
         $client->approved_state = 1;
         $client->save();
 
+        $admin=User::first();
+        $admin->notify(new greetClient($client));
         return "true";
     }
 

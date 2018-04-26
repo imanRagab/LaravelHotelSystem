@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class ModifyFloorsTable extends Migration
+class SetFloorsPrimaryEy extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,8 @@ class ModifyFloorsTable extends Migration
     public function up()
     {
         Schema::table('floors', function (Blueprint $table) {
-            $table->dropPrimary('floor_num');
+            $table->increments('id');
+            $table->integer('floor_num')->change();
            
         });
     }
