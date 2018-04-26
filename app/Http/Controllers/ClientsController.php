@@ -96,8 +96,7 @@ class ClientsController extends Controller
         $client->approved_state = 1;
         $client->save();
 
-        $admin=User::first();
-        $admin->notify(new greetClient($client));
+        $client->notify(new greetClient);
         return "true";
     }
 

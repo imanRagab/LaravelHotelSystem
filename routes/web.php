@@ -1,5 +1,6 @@
 <?php
-
+use App\User;
+use App\Notifications\greetClient;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
