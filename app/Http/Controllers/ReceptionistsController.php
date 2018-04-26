@@ -6,8 +6,6 @@ use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
 use App\User;
 use Auth;
-//use Cog\Contracts\Ban\Bannable as BannableContract;
-//use Cog\Laravel\Ban\Traits\Bannable;
 
 class ReceptionistsController extends Controller
 {
@@ -45,7 +43,7 @@ class ReceptionistsController extends Controller
         ->addColumn('action', function ($receptionist) {
             if (Auth::id()==$receptionist->created_by && $receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
+            <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
             }else{
                 return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>

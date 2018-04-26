@@ -3,35 +3,30 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
 use App\User;
-use Spatie\Permission\Traits\HasRoles;
+use Auth;
+
 class ManagersController extends Controller
 {
-    use HasRoles;
+    //Display All Managers
     public function index()
     {
+       return view('managers.index');
+    }
+
+    public function get_all_managers()
+    {
         $managers = User::role('manager')->get();
-        return view('managers.index',['managers'=>$managers]);
+        
+     if(Auth::user()->hasRole('admin')){
+        return Datatables::of($managers)
+        ->addColumn('action', function ($manager) {
+          return '<a href="/managers'.$manager->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+            <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$manager->id.'" > Delete </i> </a>';  
+        })->make(true);
     }
-
-
-    public function edit($id)
-    {
-        $manager_edit=User::findOrFail($id);
-        return view('managers.edit',['manager' => $manager_edit]);
+        
     }
-    public function update($id,$request)
-    {
-
-        $manager=User::where('id', $id);
-        $post->update();//to be edited
-        return redirect(route('managers.index')); 
-    }
-    public function destroy($id)
-    {
-       
-        User::find($id)->delete();
-        return ["status"=>"true"];
-    }
+    
 }

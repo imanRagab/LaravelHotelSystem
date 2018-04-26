@@ -63,6 +63,14 @@ Route::post('receptionists/delete','ReceptionistsController@destroy');
 ///////////////////////////////////////////
 
 
+//Managers Routes
+
+/** dispaly all Managers */
+Route::get('/managers', 'ManagersController@index')->name('receptionists');
+Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','uses'=>'ManagersController@get_all_managers']);
+
+///////////////////////////////////////////
+
 Route::get('managers', 'ManagersController@index');
 
 Route::get('clients','Client\UsersController@index')->name('clients');
