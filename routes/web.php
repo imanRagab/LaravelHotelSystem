@@ -20,7 +20,6 @@ Route::get('index', function () {
     return view('dashboard');
 });
 
-Route::get('reservations', 'ReservationsController@index');
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
@@ -127,7 +126,23 @@ Route::get('getReservationsData', 'ClientsController@getReservationsData')->name
 
 Route::get('register','Client\RegistersController@show')->name('register');
 
+/**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all','Reservations\ReservationsController@index');
+/**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations','ReservationsController@index');
+/**
+ * reservation routes, create reservation
+ */
+Route::get('reservations/{room}','ReservationsController@create');
 
+/**
+ * reservation routes, store reservation
+ */
+Route::post('reservations','ReservationsController@store');
 
 
 

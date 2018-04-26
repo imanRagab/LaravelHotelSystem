@@ -15,9 +15,18 @@ class Room extends Model
         
         
     ];
+
+    /**
+     * change format of price
+     */
+    public function getDollarPriceAttribute($value){
+        return $this->price/100;
+    }
+
     public function user()
     {
         return $this->belongsTo(User::class);
     }
     
+
 }
