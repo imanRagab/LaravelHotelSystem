@@ -73,9 +73,12 @@ Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','use
 Route::get('managers/create','ManagersController@create')->name('managers.create');
 Route::post('/managers','ManagersController@store');
 
+
+/** Edit Manager Info */
+Route::get('managers/{manager}/edit','ManagersController@edit')->name('managers.edit');
+Route::put('managers/{id}','ManagersController@update');
 ///////////////////////////////////////////
 
-Route::get('managers', 'ManagersController@index');
 
 Route::get('clients','Client\UsersController@index')->name('clients');
 

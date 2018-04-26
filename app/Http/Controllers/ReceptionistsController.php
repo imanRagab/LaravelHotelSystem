@@ -76,7 +76,7 @@ class ReceptionistsController extends Controller
                 'password'=>bcrypt($request->password),
                 'created_by'=>Auth::id(),
                 'national_id'=>$request->number,
-                'avatar_image'=>$filename
+                'avatar_image'=>'storage/images/'.$filename
    
             ]);
          }else{
@@ -108,7 +108,10 @@ class ReceptionistsController extends Controller
     {
         $receptionist = User::findOrFail($id);
          if( $request->hasFile('image')) {
-            unlink(public_path() . '/'.$receptionist->avatar_image);
+            if (file_exists(public_path() . '/'.$receptionist->avatar_image)){
+                unlink(public_path() . '/'.$receptionist->avatar_image) ;
+            }
+          
             $image = $request->file('image');
             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
@@ -120,6 +123,7 @@ class ReceptionistsController extends Controller
 
         return redirect(route('receptionists'));
     }
+
 /** Ban Or UnBan Receptionist */
     public function banOrunban(Request $request){
         $receptionist = User::findOrFail($request->userId);
