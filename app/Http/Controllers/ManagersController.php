@@ -96,6 +96,20 @@ class ManagersController extends Controller
         return redirect(route('managers'));
     }
 
+    /**Delete Manager */
+
+public function destroy(Request $request){
+    $manager = User::findOrFail($request->userId);
+    if (file_exists(public_path() . '/'.$manager->avatar_image)){
+        unlink(public_path() . '/'.$manager->avatar_image) ;
+    }
+
+  
+    $manager->delete();
+    
+    return response()->json(['response' => "success"]);
+}
+
 
 
 

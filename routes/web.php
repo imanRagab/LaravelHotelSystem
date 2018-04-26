@@ -77,6 +77,10 @@ Route::post('/managers','ManagersController@store');
 /** Edit Manager Info */
 Route::get('managers/{manager}/edit','ManagersController@edit')->name('managers.edit');
 Route::put('managers/{id}','ManagersController@update');
+
+/** Delete Receptionist */
+Route::post('managers/delete','ManagersController@destroy');
+
 ///////////////////////////////////////////
 
 
