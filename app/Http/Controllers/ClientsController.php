@@ -75,7 +75,7 @@ class ClientsController extends Controller
     {
         $clients = Auth::user()->hasRole('admin|manager') ? 
                     User::role('client') -> where('approved_state', 1) -> get()
-                    : User::role('client') -> where([
+                    : User::role('client') -> select('name', 'email', 'mobile', 'country', 'gender') -> where([
                         ['created_by', Auth::user()->id],
                         ['approved_state', 1]
                     ]) -> get();
@@ -93,7 +93,7 @@ class ClientsController extends Controller
 
     public function getPendingData()
     {
-        $clients = User::role('client') -> where('approved_state', 0) -> get();
+        $clients = User::role('client') -> select('name', 'email', 'mobile', 'country', 'gender') -> where('approved_state', 0) -> get();
         return Datatables::of($clients)->make(true);
     }
 
@@ -117,8 +117,8 @@ class ClientsController extends Controller
 
     public function getReservationsData(){
 
-        $reservation = DB::table('reservations')
-            ->select()
+        $reservation = Reservation::query()
+            ->select('name', 'room_num', 'accompany_number', 'paid_price')
             ->join('users','reservations.client_id','=','users.id')
             ->join('rooms','reservations.room_id','=','rooms.id')
             ->where('users.created_by', Auth::user()->id)

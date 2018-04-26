@@ -19,15 +19,11 @@ class Reservation extends Model
 
     public function client(){
         
-        // $client = User::where('id', $this->client_id);
-        // return $client;
         return $this->belongsTo(User::class);
     }
 
     public function room(){
         
-        // $room = Room::where('id', $this->room_id);
-        // return $clients;
         return $this->belongsTo(Room::class);
     }
 }
