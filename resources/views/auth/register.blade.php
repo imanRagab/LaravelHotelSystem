@@ -107,7 +107,7 @@
                                 @endforeach    
                             </select>
 
-                                @if ($errors->has('mobile'))
+                                @if ($errors->has('country'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('national_id') }}</strong>
                                     </span>

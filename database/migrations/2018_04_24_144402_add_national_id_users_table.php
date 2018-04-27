@@ -15,7 +15,6 @@ class AddNationalIdUsersTable extends Migration
     {
         Schema::table('users', function (Blueprint $table) {
             $table->bigInteger('national_id')->nullable();
-            //$table->string('country');
             $table->string('avatar_image')->default('storage/images/avatar.jpg');
             
         });  
