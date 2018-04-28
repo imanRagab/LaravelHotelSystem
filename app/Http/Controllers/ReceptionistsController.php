@@ -58,7 +58,7 @@ class ReceptionistsController extends Controller
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
             <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
-            }else{
+            }elseif(Auth::id()==$receptionist->created_by && $receptionist->isBanned()){
                 return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
                 <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
                 <a class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>'; 
