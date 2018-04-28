@@ -102,7 +102,38 @@ Route::post('rooms','RoomsController@store')->middleware('auth');
 Route::group(['middleware' => ['role:admin|manager|receptionist']], function () {
    
 });
+/**************************************** Routes For Clients only ***********************************/
 
+
+Route::group(['middleware' => ['role:client']], function () {
+  /**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all','Reservations\ReservationsController@index')->name('reservations');
+/**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all/get_all_reservation','Reservations\ReservationsController@get_all_reservation')->name('reservations/all');
+/**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations','ReservationsController@index');
+/**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations/get_available_rooms','ReservationsController@get_available_rooms')->name('availablerooms');
+
+/**
+ * reservation routes, create reservation
+ */
+Route::get('reservations/{room}','ReservationsController@create');
+
+/**
+ * reservation routes, store reservation
+ */
+
+Route::post('reservations','ReservationsController@store'); 
+});
 
 
 ///////////////////////////////////////////
@@ -138,33 +169,7 @@ Route::get('getReservationsData', 'ClientsController@getReservationsData')->name
 
 Route::get('register','Client\RegistersController@show')->name('register');
 
-/**
- * reservation routes, show client's reversation
- */
-Route::get('reservations/all','Reservations\ReservationsController@index')->name('reservations');
-/**
- * reservation routes, show client's reversation
- */
-Route::get('reservations/all/get_all_reservation','Reservations\ReservationsController@get_all_reservation')->name('reservations/all');
-/**
- * reservation routes, show available rooms
- */
-Route::get('reservations','ReservationsController@index');
-/**
- * reservation routes, show available rooms
- */
-Route::get('reservations/get_available_rooms','ReservationsController@get_available_rooms')->name('availablerooms');
 
-/**
- * reservation routes, create reservation
- */
-Route::get('reservations/{room}','ReservationsController@create');
-
-/**
- * reservation routes, store reservation
- */
-
-Route::post('reservations','ReservationsController@store');
 /**
  * Edit profile for all users
  */
