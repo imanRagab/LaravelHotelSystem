@@ -152,3 +152,8 @@ Route::get('users/{user}/edit', 'ClientsController@editProfile')->middleware('au
  * Show profile for all users
  */
 Route::get('users/{user}/', 'ClientsController@show')->middleware('auth')->name('users.show');
+/**
+ * Update profile for all users
+ */
+Route::put('users/{user}', 'ClientsController@updateProfile')->middleware('auth')->name('updateProfile');
+Route::get('/signout','ClientsController@signOut')->middleware('auth')->name('signOut');

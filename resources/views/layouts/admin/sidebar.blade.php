@@ -33,7 +33,7 @@
             {{--  <li class="header">HEADER</li>  --}}
 
             <!-- Optionally, you can add icons to the links -->
-            <li><a href="/admin"><span>Dashboard</span></a></li>
+            <li><a href="/index"><span>Dashboard</span></a></li>
             @role('admin')
             <li><a href="/managers"><span>Managers</span></a></li>
             @endrole

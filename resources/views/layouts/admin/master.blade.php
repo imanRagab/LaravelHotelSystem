@@ -3,7 +3,7 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>{{ $page_title or "AdminLTE Dashboard" }}</title>
+    <title>{{ $page_title or "Hotel_System" }}</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <!-- Bootstrap 3.3.2 -->
@@ -132,12 +132,12 @@
             <!-- Content Wrapper. Contains page content -->
             <div class="content-wrapper">
                 <!-- Content Header (Page header) -->
-                <section class="content-header">
+                <!-- <section class="content-header">
                     <h1>
                         {{ $page_title or "Page Title" }}
                         <small>{{ $page_description or null }}</small>
                     </h1>
-                </section>
+                </section> -->
 
 
                 <!-- Main content -->

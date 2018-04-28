@@ -12,6 +12,7 @@ use App\Room;
 use App\Reservation;
 use App\Notifications\greetClient;
 use App\Http\Requests\UserUpdateRequest;
+
 class ClientsController extends Controller
 {
     use HasRoles;
@@ -114,33 +115,41 @@ class ClientsController extends Controller
         
     }
 
-    public function editProfile($user)
+    public function editProfile($id)
     {
-        return view('clients.editProfile');
+        $user=User::findOrFail($id);
+        return view('clients.editProfile',['user'=>$user]);
     }
 
-    public function show($user)
+    public function show($id)
     {
-        return view('clients.showProfile');
+        $user=User::findOrFail($id);
+        return view('clients.showProfile',['user'=>$user]);
     }
-    public function updateProfile($user,UserUpdateRequest  $request)
+    public function updateProfile($id,UserUpdateRequest  $request)
     {
-        $user_edit=User::where('id',$user->id);
+        $user=User::findOrFail($id);
+        $user_edit=User::where('id',$id);
         if( $request->hasFile('avatar_image')) {
-            if (file_exists(public_path() . '/'.$receptionist->avatar_image) && $receptionist->avatar_image != "storage/images/avatar.jpg"){
-                unlink(public_path() . '/'.$manager->avatar_image) ;
+            if (file_exists(public_path() . '/'.$user_edit->avatar_image) && $user_edit->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$user_edit->avatar_image) ;
             }
             
             $image = $request->file('avatar_image');
             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
             $request->avatar_image->storeAs('public/images',$filename);
-            $manager->update(['avatar_image' => 'storage/images/'.$filename]);
+            $user_edit->update(['avatar_image' => 'storage/images/'.$filename]);
         }
 
-        $manager->fill($request->only(['name','email','national_id']))->save();
-
-        return redirect(route('managers'));
+        $user_edit->update(['name'=>$request->name,'email'=>$request->email,'mobile'=>$request->mobile,'national_id'=>$request->national_id]);
+        $validated = $request-> validated();
+        return redirect(route('users.show',['user'=>$id]));
     
+    }
+    public function signOut()
+    {
+        Auth::logout();
+        return redirect(route('login'));
     }
 }

@@ -4,6 +4,8 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use App\User;
 class UserUpdateRequest extends FormRequest
 {
     /**
@@ -23,10 +25,12 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
+        $id = $this->route('user');
+        $user = User::find($id);
         return [
 
-            'national_id' => 'unique:users,national_id,'.$request->id,
-            'email' => 'required|unique:users,email,'.$request->id,
+            'national_id' => Rule::unique('users')->ignore($user->national_id, 'national_id'),
+            'email' => ['required',Rule::unique('users')->ignore($user->email, 'email')],
             'avatar_image' => 'mimes:jpeg,jpg'
         ];
     }
