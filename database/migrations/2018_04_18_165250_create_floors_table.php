@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddRoomCreatedByColumn extends Migration
+class CreateFloorsTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,13 +13,16 @@ class AddRoomCreatedByColumn extends Migration
      */
     public function up()
     {
-        Schema::table('rooms', function (Blueprint $table) {
-
-            $table->unsignedInteger('created_by');
+        Schema::create('floors', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('number');
+            $table->string('name');
+            $table->unsignedInteger('created_by');///foriegn key to the manager table 
             $table->foreign('created_by')->nullable()
             ->references('id')->on('users')
             ->onDelete('cascade');
-        });   
+            $table->timestamps();
+        });
     }
 
     /**
@@ -29,7 +32,6 @@ class AddRoomCreatedByColumn extends Migration
      */
     public function down()
     {
-        
+        Schema::dropIfExists('floors');
     }
 }
-
