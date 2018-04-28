@@ -43,13 +43,16 @@ class createAdmin extends Command
         $password = Hash::make($this->option('password'));
         $email = $this->option('email');
 
-        User::firstOrCreate([
-            'name'=> $name,
-            'email' => $email,
-            'password' => $password
-        ])->assignRole('admin');
-
-
-        $this->info("Admin created successfully.");
+        if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            $this->error("Invalid email format"); 
+          }
+        else{
+            User::firstOrCreate([
+                'name'=> $name,
+                'email' => $email,
+                'password' => $password
+            ])->assignRole('admin');
+            $this->info("Admin created successfully.");
+        }
     }
 }

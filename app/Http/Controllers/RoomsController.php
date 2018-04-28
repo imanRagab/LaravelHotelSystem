@@ -69,7 +69,6 @@ public function edit($id)
 
 public function update(RoomsUpdateRequest $request,Room $room)
 {
-    dd($request);
     $new_room = $request->only(['number', 'capacity','price']);
     $room->update($new_room);
     return redirect('/rooms');     

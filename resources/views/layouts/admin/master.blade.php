@@ -54,7 +54,9 @@
             ////Ajax function for delete/////
 
         HTMLElement.prototype.del = function(delUrl){
-            var resp = confirm("Are you sure you want to delete this person?");
+
+            var resp = confirm("Are you sure you want to delete this client?");
+
             if (resp == true) {
                 $.ajaxSetup({
                 headers: {
