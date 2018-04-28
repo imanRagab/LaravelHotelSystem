@@ -1,6 +1,9 @@
 @extends('reservations.start')
 
 @section('data')
+<div class="container">
+<div class='row'>
+<div class='col-md-6'>
 <table class="table">
     <tr class="row">
         <td class="col-md-3">Room Number</td>
@@ -29,6 +32,8 @@
         @endif
     </tr>                              
 </table>
+</div>
+<div class='col-md-4'>
 <script src="https://js.stripe.com/v2/" type="text/javascript"></script>
 <form accept-charset="UTF-8" action="/checkout" class="require-validation"
     data-cc-on-file="false"
@@ -86,5 +91,8 @@
         </div>
     </div>
 </form>
+</div>
+</div>
+</div>
 
 @endsection

@@ -56,13 +56,12 @@ class ReservationsController extends Controller
         Stripe::setApiKey ( env('STRIPE_SECRET_KEY') );
         Customer::create(array(
             'email' => Auth::user()->email,
-            'source'  => $request->stripeToken
         ));
         Charge::create ( array (
             "amount" => $room->price,
             "currency" => "usd",
             "description" => "Test payment.", 
-            "source" => "tok_amex"
+            "source" => $request->stripeToken
         ) );
         return redirect('/reservations/all');
     }
