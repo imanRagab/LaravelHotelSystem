@@ -54,7 +54,7 @@
             ////Ajax function for delete/////
 
         HTMLElement.prototype.del = function(delUrl){
-            var resp = confirm("Are you sure you want to delete this post?");
+            var resp = confirm("Are you sure you want to delete this person?");
             if (resp == true) {
                 $.ajaxSetup({
                 headers: {
