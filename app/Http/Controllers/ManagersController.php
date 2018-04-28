@@ -3,35 +3,122 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use Yajra\Datatables\Datatables;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
-use Spatie\Permission\Traits\HasRoles;
+use Auth;
+
 class ManagersController extends Controller
 {
-    use HasRoles;
+    //Display All Managers
     public function index()
     {
+       return view('managers.index');
+    }
+
+    public function get_all_managers()
+    {
         $managers = User::role('manager')->get();
-        return view('managers.index',['managers'=>$managers]);
+        
+     if(Auth::user()->hasRole('admin')){
+        return Datatables::of($managers)
+        ->addColumn('created_at', function ($manager) {
+        
+            return $manager->created_date;
+            
+        })
+        ->addColumn('action', function ($manager) {
+          return '<a href="/managers/'.$manager->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+            <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$manager->id.'" > Delete </i> </a>';  
+        })->make(true);
+    }
+        
     }
 
+    //create new receptionist
+    public function create()
+    {
+        return view('managers.create');
+    }
 
-    public function edit($id)
-    {
-        $manager_edit=User::findOrFail($id);
-        return view('managers.edit',['manager' => $manager_edit]);
-    }
-    public function update($id,$request)
-    {
+    //Store Post in database
+     public function store(UserStoreRequest $request)
+     {
+         if( $request->hasFile('avatar_image')) {
+             $image = $request->file('avatar_image');
+             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+             $request->avatar_image->storeAs('public/images',$filename);
+             $manager=User::create([
+                'name'=> $request->name,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'national_id'=>$request->national_id,
+                'avatar_image'=>'storage/images/'.$filename
+   
+            ]);
+         }else{
+            $manager=User::create([
+                'name'=> $request->name,
+                'email'=>$request->email,
+                'password'=>bcrypt($request->password),
+                'created_by'=>Auth::id(),
+                'national_id'=>$request->national_id,
+            ]);
+         }
+         $manager->assignRole('manager');
+         return redirect( '/managers'); 
+        
+     }
 
-        $manager=User::where('id', $id);
-        $post->update();//to be edited
-        return redirect(route('managers.index')); 
-    }
-    public function destroy($id)
+    //Edit Receptionist in database
+    public function edit($user_id)
     {
-       
-        User::find($id)->delete();
-        return ["status"=>"true"];
+  
+        $manager = User::findOrFail($user_id);
+        return view('managers.edit',[
+            'manager' => $manager,   
+        ]);
     }
+
+    //update Manager in database
+    public function update(UserUpdateRequest $request,  $id)
+    {
+        $manager = User::findOrFail($id);
+         if( $request->hasFile('avatar_image')) {
+            if (file_exists(public_path() . '/'.$receptionist->avatar_image)){
+                unlink(public_path() . '/'.$manager->avatar_image) ;
+            }
+            
+            $image = $request->file('avatar_image');
+            $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+            $request->avatar_image->storeAs('public/images',$filename);
+            $manager->update(['avatar_image' => 'storage/images/'.$filename]);
+        }
+
+        $manager->fill($request->only(['name','email','national_id']))->save();
+
+        return redirect(route('managers'));
+    }
+
+    /**Delete Manager */
+
+public function destroy(Request $request){
+    $manager = User::findOrFail($request->userId);
+    if (file_exists(public_path() . '/'.$manager->avatar_image)){
+        unlink(public_path() . '/'.$manager->avatar_image) ;
+    }
+
+  
+    $manager->delete();
+    
+    return response()->json(['response' => "success"]);
+}
+
+
+
+
+    
 }

@@ -143,6 +143,15 @@
 
                 <!-- Main content -->
                 <section class="content">
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
                     <!-- Your Page Content Here -->
                     @yield('content')
                 </section><!-- /.content -->

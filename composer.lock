@@ -5,6 +5,7 @@
         "This file is @generated automatically"
     ],
     "content-hash": "12011440c307dd41673c8bf8b521a875",
+
     "packages": [
         {
             "name": "cybercog/laravel-ban",

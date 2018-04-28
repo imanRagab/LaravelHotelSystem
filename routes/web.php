@@ -1,5 +1,6 @@
 <?php
-
+use App\User;
+use App\Notifications\greetClient;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -39,30 +40,62 @@ Route::post('update/{room}','RoomsController@update')->middleware('auth');
 Route::get('rooms/{room_num}/edit','RoomsController@edit')->middleware('auth');
 Route::delete('floors/{room_num}','RoomsController@destroy')->middleware('auth');
 
+/**************************************** Routes For Admin Only ***********************************/
+
+
+Route::group(['middleware' => ['role:admin']], function () {
+    //Managers Routes
+    /** dispaly all Managers */
+    Route::get('/managers', 'ManagersController@index')->name('managers');
+    Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','uses'=>'ManagersController@get_all_managers']);
+    
+    /** create Managers */
+    Route::get('managers/create','ManagersController@create')->name('managers.create');
+    Route::post('/managers','ManagersController@store');
+    
+    
+    /** Edit Manager Info */
+    Route::get('managers/{manager}/edit','ManagersController@edit')->name('managers.edit');
+    Route::put('managers/{id}','ManagersController@update');
+    
+    /** Delete Receptionist */
+    Route::post('managers/delete','ManagersController@destroy');
+    
+    });
+
+
+/**************************************** Routes For Admin and Managers ***********************************/
+Route::group(['middleware' => ['role:admin|manager']], function () {
+  //Receptionists Routes
+    /** dispaly all receptionists */
+    Route::get('/receptionists', 'ReceptionistsController@index')->name('receptionists');
+    Route::get('/receptionists/get_all_receptionists', ['as'=>'receptionists.get_all_receptionists','uses'=>'ReceptionistsController@get_all_receptionists']);
+    /** create Receptionist */
+    Route::get('receptionists/create','ReceptionistsController@create')->name('receptionists.create');
+    Route::post('/receptionists','ReceptionistsController@store');
+
+    /** Edit Receptionist Info */
+    Route::get('receptionists/{receptionist}/edit','ReceptionistsController@edit')->name('receptionists.edit');
+    Route::put('receptionists/{id}','ReceptionistsController@update');
+
+    /** Ban Or UnBan Receptionist */
+    Route::post('receptionists/ban','ReceptionistsController@banOrunban');
+    /** Delete Receptionist */
+    Route::post('receptionists/delete','ReceptionistsController@destroy');
+});
+
+
+/**************************************** Routes For Admin && Managers && Receptionists ***********************************/
+
+
+Route::group(['middleware' => ['role:admin|manager|receptionist']], function () {
+   
+});
 
 
 
-//Receptionists Routes
-
-/** dispaly all receptionists */
-Route::get('/receptionists', 'ReceptionistsController@index')->name('receptionists');
-Route::get('/receptionists/get_all_receptionists', ['as'=>'receptionists.get_all_receptionists','uses'=>'ReceptionistsController@get_all_receptionists']);
-/** create Receptionist */
-Route::get('receptionists/create','ReceptionistsController@create')->name('receptionists.create');
-Route::post('/receptionists','ReceptionistsController@store');
-
-/** Edit Receptionist Info */
-Route::get('receptionists/{receptionist}/edit','ReceptionistsController@edit')->name('receptionists.edit');
-Route::put('receptionists/{id}','ReceptionistsController@update');
-
-/** Ban Or UnBan Receptionist */
-Route::post('receptionists/ban','ReceptionistsController@banOrunban');
-/** Delete Receptionist */
-Route::post('receptionists/delete','ReceptionistsController@destroy');
 ///////////////////////////////////////////
 
-
-Route::get('managers', 'ManagersController@index');
 
 Route::get('clients','Client\UsersController@index')->name('clients');
 

@@ -8,6 +8,7 @@ use Spatie\Permission\Traits\HasRoles;
 use Tymon\JWTAuth\Contracts\JWTSubject;
 use Cog\Contracts\Ban\Bannable as BannableContract;
 use Cog\Laravel\Ban\Traits\Bannable;
+use Carbon\Carbon;
 
 class User extends Authenticatable implements BannableContract,JWTSubject
 {
@@ -59,5 +60,14 @@ class User extends Authenticatable implements BannableContract,JWTSubject
         return [];
     }
 
+    public function routeNotificationForMail($notification)
+    {
+        return $this->email;
+    }
 
+    public function getCreatedDateAttribute($value)
+    {
+        return \Carbon\Carbon::parse($value)->format('Y-m-d');
+
+    }
 }
