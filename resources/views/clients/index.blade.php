@@ -2,8 +2,8 @@
 
 @section('content')
    
-     <a href="/clients/manage"><button class="btn btn-info">Manage Clients</button></a>
-    <a href="/clients/approved"><button class="btn btn-success">My Approved Clients</button></a>
+    <a href="/clients/manage"><button class="btn btn-info">Manage Clients</button></a>
+    <a href="/clients/approved"><button class="btn btn-success">Approved Clients</button></a>
     <a href="/clients/reservations"><button class="btn btn-primary">Clients Reservations</button></a>
     <br><br>
 

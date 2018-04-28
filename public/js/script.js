@@ -1,4 +1,3 @@
-
 $(function () {
     $(document).on('click','.deleteAjax',function(){
         var userID = $(this).attr("user-id");

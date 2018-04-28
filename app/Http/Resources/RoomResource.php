@@ -3,7 +3,7 @@
 namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
-
+use App\User;
 class RoomResource extends JsonResource
 {
     /**
@@ -15,11 +15,11 @@ class RoomResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'room_num' => $this->room_num,
+            'room_num' => $this->number,
             'capacity' => $this->capacity,
             'price' => $this->price,
             'status'=>$this->status,
-            'created_by'=>new UserResource($this->user)
+            'created_by'=>User::findOrFail($this->created_by)->name
 
         ];
     }

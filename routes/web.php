@@ -141,6 +141,58 @@ Route::post('reservations','ReservationsController@store');
 
 Route::get('clients','Client\UsersController@index')->name('clients');
 
+/**************************************** Routes For Admin Only ***********************************/
+
+
+Route::group(['middleware' => ['role:admin']], function () {
+    //Managers Routes
+    /** dispaly all Managers */
+    Route::get('/managers', 'ManagersController@index')->name('managers');
+    Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','uses'=>'ManagersController@get_all_managers']);
+    
+    /** create Managers */
+    Route::get('managers/create','ManagersController@create')->name('managers.create');
+    Route::post('/managers','ManagersController@store');
+    
+    
+    /** Edit Manager Info */
+    Route::get('managers/{manager}/edit','ManagersController@edit')->name('managers.edit');
+    Route::put('managers/{id}','ManagersController@update');
+    
+    /** Delete Receptionist */
+    Route::post('managers/delete','ManagersController@destroy');
+    
+    });
+
+
+/**************************************** Routes For Admin and Managers ***********************************/
+Route::group(['middleware' => ['role:admin|manager']], function () {
+  //Receptionists Routes
+    /** dispaly all receptionists */
+    Route::get('/receptionists', 'ReceptionistsController@index')->name('receptionists');
+    Route::get('/receptionists/get_all_receptionists', ['as'=>'receptionists.get_all_receptionists','uses'=>'ReceptionistsController@get_all_receptionists']);
+    /** create Receptionist */
+    Route::get('receptionists/create','ReceptionistsController@create')->name('receptionists.create');
+    Route::post('/receptionists','ReceptionistsController@store');
+
+    /** Edit Receptionist Info */
+    Route::get('receptionists/{receptionist}/edit','ReceptionistsController@edit')->name('receptionists.edit');
+    Route::put('receptionists/{id}','ReceptionistsController@update');
+
+    /** Ban Or UnBan Receptionist */
+    Route::post('receptionists/ban','ReceptionistsController@banOrunban');
+    /** Delete Receptionist */
+    Route::post('receptionists/delete','ReceptionistsController@destroy');
+});
+
+
+/**************************************** Routes For Admin && Managers && Receptionists ***********************************/
+
+
+Route::group(['middleware' => ['role:admin|manager|receptionist']], function () {
+   
+});
+
 /////// Reservations Routes /////////////////////////
 
 ///////////CRUD Routes /////////////////////////
@@ -153,7 +205,7 @@ Route::get('reservations', 'ReservationsController@index');
 /////// Clients Routes /////////////////////////
 
 ///////////CRUD Routes /////////////////////////
-// Route::get('clients', 'ClientsController@index')->middleware('auth');
+
 Route::post('clients/delete', 'ClientsController@delete')->middleware('auth');
 Route::get('clients/{client}/edit', 'ClientsController@edit')->middleware('auth');
 Route::patch('clients/{client}', 'ClientsController@update')->middleware('auth');
@@ -165,10 +217,30 @@ Route::get('getPendingClientsData', 'ClientsController@getPendingData')->name('p
 Route::get('clients/manage', 'ClientsController@manage')->middleware('auth');
 Route::get('clients/reservations', 'ClientsController@showReservations')->middleware('auth');
 Route::get('getReservationsData', 'ClientsController@getReservationsData')->name('clientsReservations.data')->middleware('auth');
+
 ///////////////////////////////////////////////
 
 Route::get('register','Client\RegistersController@show')->name('register');
 
+/**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all','Reservations\ReservationsController@index');
+/**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations','ReservationsController@index');
+/**
+ * reservation routes, create reservation
+ */
+Route::get('reservations/{room}','ReservationsController@create');
+
+/**
+ * reservation routes, store reservation
+ */
+
+Route::post('reservations','ReservationsController@store');
+/**
 
 /**
  * Edit profile for all users

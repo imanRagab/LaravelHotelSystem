@@ -15,6 +15,7 @@ class Reservation extends Model
         'paid_price',
         'client_id'    
     ];
+
     /**
      * relation one to meny
      */
@@ -35,8 +36,10 @@ class Reservation extends Model
     public function getDollarPriceAttribute($value){
         return $this->paid_price/100;
     }    
+
     public function client(){
         
-        return $this->belongsTo(User::class)->name;
+        return $this->belongsTo(User::class);
     }
+
 }

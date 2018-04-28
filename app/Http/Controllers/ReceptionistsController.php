@@ -136,7 +136,6 @@ class ReceptionistsController extends Controller
 
         return redirect(route('receptionists'));
     }
-
 /** Ban Or UnBan Receptionist */
     public function banOrunban(Request $request){
         $receptionist = User::findOrFail($request->userId);
