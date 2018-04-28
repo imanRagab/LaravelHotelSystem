@@ -97,17 +97,17 @@
                         </div> 
 
                         <div class="form-group row">
-                            <label for="national_id" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+                            <label for="country" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
 
                             <div class="col-md-6">
-                            <select id="national_id" name="national_id"  value="{{ old('national_id') }}" class="form-control{{ $errors->has('national_id') ? ' is-invalid' : '' }}" >
+                            <select id="country" name="country"  value="{{ old('country') }}" class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" >
                             <option ></option>
                                 @foreach($countries as $country)
-                                    <option value="{{$country['calling_code']}}" value="{{ old('national_id')==$country['calling_code'] ? 'selected' : ''}}">{{$country['name']}}</option>
+                                    <option value="{{$country['name']}}" value="{{ old('country')==$country['name'] ? 'selected' : ''}}">{{$country['name']}}</option>
                                 @endforeach    
                             </select>
 
-                                @if ($errors->has('mobile'))
+                                @if ($errors->has('country'))
                                     <span class="invalid-feedback">
                                         <strong>{{ $errors->first('national_id') }}</strong>
                                     </span>

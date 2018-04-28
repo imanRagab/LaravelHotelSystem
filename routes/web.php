@@ -1,5 +1,6 @@
 <?php
-
+use App\User;
+use App\Notifications\greetClient;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -15,8 +16,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('admin', function () {
-    return view('layouts.admin.master');
+
+Route::get('index', function () {
+    return view('dashboard');
 });
 
 Auth::routes();
@@ -25,23 +27,70 @@ Route::get('/home', 'HomeController@index')->name('home');
 ////////Floors Routes/////////////
 
 Route::get('floors','FloorsController@index')->middleware('auth');
-Route::patch('floors/{floor}', 'FloorsController@update')->middleware('auth');
-Route::get('floors/{floor}/edit','FloorsController@edit')->middleware('auth');
-Route::delete('floors/{floor}','FloorsController@destroy')->middleware('auth');
+Route::post('update/{floor}','FloorsController@update')->middleware('auth');
+Route::get('floors/{floor_num}/edit','FloorsController@edit')->middleware('auth');
+Route::delete('floors/{floor_num}','FloorsController@destroy')->middleware('auth');
 Route::get('floors/create','FloorsController@create')->middleware('auth');
 Route::post('floors','FloorsController@store')->middleware('auth');
-Route::get('getFloorsData', 'FloorsController@getData')->name('floors.data')->middleware('auth');
 
 //////////Rooms Routes/////////////////////////
-
-
 Route::get('rooms','RoomsController@index')->middleware('auth');
 Route::get('getRoomsData', 'RoomsController@getData')->name('rooms.data')->middleware('auth');
-Route::patch('rooms/{room}', 'RoomsController@update')->middleware('auth');
-Route::get('rooms/{id}/edit','RoomsController@edit')->middleware('auth');
-Route::delete('rooms/{room}','RoomsController@destroy')->middleware('auth');
-Route::get('rooms/create','RoomsController@create')->middleware('auth');
-Route::post('rooms','RoomsController@store')->middleware('auth');
+Route::post('update/{room}','RoomsController@update')->middleware('auth');
+Route::get('rooms/{room_num}/edit','RoomsController@edit')->middleware('auth');
+Route::delete('floors/{room_num}','RoomsController@destroy')->middleware('auth');
+
+/**************************************** Routes For Admin Only ***********************************/
+
+
+Route::group(['middleware' => ['role:admin']], function () {
+    //Managers Routes
+    /** dispaly all Managers */
+    Route::get('/managers', 'ManagersController@index')->name('managers');
+    Route::get('/managers/get_all_managers', ['as'=>'managers.get_all_managers','uses'=>'ManagersController@get_all_managers']);
+    
+    /** create Managers */
+    Route::get('managers/create','ManagersController@create')->name('managers.create');
+    Route::post('/managers','ManagersController@store');
+    
+    
+    /** Edit Manager Info */
+    Route::get('managers/{manager}/edit','ManagersController@edit')->name('managers.edit');
+    Route::put('managers/{id}','ManagersController@update');
+    
+    /** Delete Receptionist */
+    Route::post('managers/delete','ManagersController@destroy');
+    
+    });
+
+
+/**************************************** Routes For Admin and Managers ***********************************/
+Route::group(['middleware' => ['role:admin|manager']], function () {
+  //Receptionists Routes
+    /** dispaly all receptionists */
+    Route::get('/receptionists', 'ReceptionistsController@index')->name('receptionists');
+    Route::get('/receptionists/get_all_receptionists', ['as'=>'receptionists.get_all_receptionists','uses'=>'ReceptionistsController@get_all_receptionists']);
+    /** create Receptionist */
+    Route::get('receptionists/create','ReceptionistsController@create')->name('receptionists.create');
+    Route::post('/receptionists','ReceptionistsController@store');
+
+    /** Edit Receptionist Info */
+    Route::get('receptionists/{receptionist}/edit','ReceptionistsController@edit')->name('receptionists.edit');
+    Route::put('receptionists/{id}','ReceptionistsController@update');
+
+    /** Ban Or UnBan Receptionist */
+    Route::post('receptionists/ban','ReceptionistsController@banOrunban');
+    /** Delete Receptionist */
+    Route::post('receptionists/delete','ReceptionistsController@destroy');
+});
+
+
+/**************************************** Routes For Admin && Managers && Receptionists ***********************************/
+
+
+Route::group(['middleware' => ['role:admin|manager|receptionist']], function () {
+   
+});
 
 /////// Reservations Routes /////////////////////////
 
@@ -72,7 +121,36 @@ Route::get('getReservationsData', 'ClientsController@getReservationsData')->name
 
 Route::get('register','Client\RegistersController@show')->name('register');
 
-///////////////////////////////////////////////
+/**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all','Reservations\ReservationsController@index');
+/**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations','ReservationsController@index');
+/**
+ * reservation routes, create reservation
+ */
+Route::get('reservations/{room}','ReservationsController@create');
 
+/**
+ * reservation routes, store reservation
+ */
 
+Route::post('reservations','ReservationsController@store');
+/**
+ * Edit profile for all users
+ */
+Route::get('users/{user}/edit', 'ClientsController@editProfile')->middleware('auth')->name('editProfile');
+/**
+ * Show profile for all users
+ */
+Route::get('users/{user}/', 'ClientsController@show')->middleware('auth')->name('users.show');
+/**
+ * Update profile for all users
+ */
+Route::put('users/{user}', 'ClientsController@updateProfile')->middleware('auth')->name('updateProfile');
+Route::get('/signout','ClientsController@signOut')->middleware('auth')->name('signOut');
 
+Route::post('checkout','ReservationsController@store');

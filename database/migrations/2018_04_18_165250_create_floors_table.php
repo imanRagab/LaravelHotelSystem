@@ -13,19 +13,16 @@ class CreateFloorsTable extends Migration
      */
     public function up()
     {
-           
-     
         Schema::create('floors', function (Blueprint $table) {
-
-        // $table->increments('id');
-
-        $table->string('name');
-        $table->bigIncrements('floor_num')->unsigned();
-        $table->integer('manager_id')->nullable();
-        $table->foreign('manager_id')->references('id')->on('users');
-        $table->timestamps();
+            $table->increments('id');
+            $table->integer('number');
+            $table->string('name');
+            $table->unsignedInteger('created_by');///foriegn key to the manager table 
+            $table->foreign('created_by')->nullable()
+            ->references('id')->on('users')
+            ->onDelete('cascade');
+            $table->timestamps();
         });
-        DB::update("ALTER TABLE floors AUTO_INCREMENT = 1000;");
     }
 
     /**

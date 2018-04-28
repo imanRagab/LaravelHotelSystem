@@ -37,25 +37,6 @@ class LoginController extends Controller
     }
 
     protected $redirectTo = '/index';
-    // protected function redirectTo(){
-    //     $user = Auth::user();
-    //     if($user->hasRole('admin')){
-            
-    //         return('/admins');
-    //     }
-    //     else if($user->hasRole('manager'))
-    //     {
-    //         return('/managers');
-    //     }
-    //     else if($user->hasRole('client'))
-    //     {
-    //         return('/clients');
-    //     }
-    //     else if($user->hasRole('receptionist'))
-    //     {
-    //         return('/receptionists');
-    //     }
-    // }
-
+   
 }
 

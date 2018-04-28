@@ -14,18 +14,22 @@ class CreateReservationsTable extends Migration
     public function up()
     {
         Schema::create('reservations', function (Blueprint $table) {
-            
-
             $table->increments('id');
-            $table->integer('client_id')->nullable();;
-            $table->integer('room_id');
+
+            $table->unsignedInteger('client_id');///foriegn key to the client table  
+            $table->foreign('client_id')->nullable()
+            ->references('id')->on('users')
+            ->onDelete('cascade');
+
+            $table->unsignedInteger('room_id');///foriegn key to the client table  
+            $table->foreign('room_id')->nullable()
+            ->references('id')->on('rooms')
+            ->onDelete('cascade');
+
             $table->integer('accompany_number');
             $table->integer('paid_price');
-            $table->integer('status');
-            $table->timestamps();
-
-
             
+            $table->timestamps();
         });
     }
 

@@ -28,7 +28,7 @@ class ClientsController extends Controller
      */
     public function index()
     {
-        return view('clients.index');
+        return view('clients.index',['page_title' => "Approved Clients"]);
     }
 
 
@@ -107,7 +107,7 @@ class ClientsController extends Controller
     
     public function manage(){
 
-        return view('clients.manage');
+        return view('clients.manage',['page_title' => "Manage Clients"]);
     }
 
     ////////////////////////////////////
@@ -133,7 +133,7 @@ class ClientsController extends Controller
 
     public function showReservations(){
 
-        return view('clients.reservations');
+        return view('clients.reservations', ['page_title' => "Client Reservations"]);
 
     }
 
