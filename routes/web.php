@@ -144,7 +144,11 @@ Route::get('reservations/{room}','ReservationsController@create');
  * reservation routes, store reservation
  */
 Route::post('reservations','ReservationsController@store');
-
-
-
-
+/**
+ * Edit profile for all users
+ */
+Route::get('users/{user}/edit', 'ClientsController@editProfile')->middleware('auth')->name('editProfile');
+/**
+ * Show profile for all users
+ */
+Route::get('users/{user}/', 'ClientsController@show')->middleware('auth')->name('users.show');

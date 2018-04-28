@@ -11,7 +11,7 @@ use App\User;
 use App\Room;
 use App\Reservation;
 use App\Notifications\greetClient;
-
+use App\Http\Requests\UserUpdateRequest;
 class ClientsController extends Controller
 {
     use HasRoles;
@@ -95,8 +95,8 @@ class ClientsController extends Controller
 
         $client->approved_state = 1;
         $client->save();
-
-        $client->notify(new greetClient);
+        $when = now()->addSeconds(10);
+        $client->notify((new greetClient)->delay($when));
         return "true";
     }
 
@@ -114,5 +114,33 @@ class ClientsController extends Controller
         
     }
 
+    public function editProfile($user)
+    {
+        return view('clients.editProfile');
+    }
 
+    public function show($user)
+    {
+        return view('clients.showProfile');
+    }
+    public function updateProfile($user,UserUpdateRequest  $request)
+    {
+        $user_edit=User::where('id',$user->id);
+        if( $request->hasFile('avatar_image')) {
+            if (file_exists(public_path() . '/'.$receptionist->avatar_image) && $receptionist->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$manager->avatar_image) ;
+            }
+            
+            $image = $request->file('avatar_image');
+            $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+            $request->avatar_image->storeAs('public/images',$filename);
+            $manager->update(['avatar_image' => 'storage/images/'.$filename]);
+        }
+
+        $manager->fill($request->only(['name','email','national_id']))->save();
+
+        return redirect(route('managers'));
+    
+    }
 }
