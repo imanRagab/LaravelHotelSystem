@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNationalIdUsersTable extends Migration
+class AddLastloginToUsersTable extends Migration
 {
     /**
      * Run the migrations.
@@ -14,10 +14,8 @@ class AddNationalIdUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->bigInteger('national_id')->nullable();
-            $table->string('avatar_image')->default('storage/images/avatar.jpg');
-            
-        });  
+            $table->timestamp('last_login')->nullable();
+        });
     }
 
     /**
@@ -27,6 +25,8 @@ class AddNationalIdUsersTable extends Migration
      */
     public function down()
     {
-        //
+        Schema::table('users', function (Blueprint $table) {
+            $table->dropColumn('last_login');
+        });
     }
 }

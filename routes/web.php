@@ -143,6 +143,7 @@ Route::get('reservations/{room}','ReservationsController@create');
 /**
  * reservation routes, store reservation
  */
+
 Route::post('reservations','ReservationsController@store');
 /**
  * Edit profile for all users
@@ -157,3 +158,6 @@ Route::get('users/{user}/', 'ClientsController@show')->middleware('auth')->name(
  */
 Route::put('users/{user}', 'ClientsController@updateProfile')->middleware('auth')->name('updateProfile');
 Route::get('/signout','ClientsController@signOut')->middleware('auth')->name('signOut');
+
+Route::post('checkout','ReservationsController@store');
+

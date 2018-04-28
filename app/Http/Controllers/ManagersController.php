@@ -87,7 +87,8 @@ class ManagersController extends Controller
     {
         $manager = User::findOrFail($id);
          if( $request->hasFile('avatar_image')) {
-            if (file_exists(public_path() . '/'.$manager->avatar_image)){
+
+            if (file_exists(public_path() . '/'.$manager->avatar_image) && $manager->avatar_image != "storage/images/avatar.jpg"){
                 unlink(public_path() . '/'.$manager->avatar_image) ;
             }
             

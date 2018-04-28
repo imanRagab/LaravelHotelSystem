@@ -34,7 +34,7 @@
 
 <!-- jQuery 2.1.3 -->
 <script src="https://code.jquery.com/jquery-2.1.3.min.js" integrity="sha256-ivk71nXhz9nsyFDoYoGf2sbjrR9ddh+XDkCcfZxjvcM=" crossorigin="anonymous"></script>
- 
+
 <!-- Bootstrap 3.3.2 JS -->
 <script src="//maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 <!-- AdminLTE App -->
@@ -116,6 +116,7 @@
         //////////////////////////////////////////////////////////
             
         </script>
+       
         @stack('js')
 </head>
 <body class="skin-blue">
@@ -159,6 +160,59 @@
             @include('layouts.admin.footer')
 
         </div><!-- ./wrapper -->
+        <script>
+		$(function() {
+			  $('form.require-validation').bind('submit', function(e) {
+			    var $form         = $(e.target).closest('form'),
+			        inputSelector = ['input[type=email]', 'input[type=password]',
+			                         'input[type=text]', 'input[type=file]',
+			                         'textarea'].join(', '),
+			        $inputs       = $form.find('.required').find(inputSelector),
+			        $errorMessage = $form.find('div.error'),
+			        valid         = true;
+			    $errorMessage.addClass('hide');
+			    $('.has-error').removeClass('has-error');
+			    $inputs.each(function(i, el) {
+			      var $input = $(el);
+			      if ($input.val() === '') {
+			        $input.parent().addClass('has-error');
+			        $errorMessage.removeClass('hide');
+			        e.preventDefault(); // cancel on first error
+			      }
+			    });
+			  });
+			});
+			$(function() {
+			  var $form = $("#payment-form");
+			  $form.on('submit', function(e) {
+			    if (!$form.data('cc-on-file')) {
+			      e.preventDefault();
+			      Stripe.setPublishableKey($form.data('stripe-publishable-key'));
+			      Stripe.createToken({
+			        number: $('.card-number').val(),
+			        cvc: $('.card-cvc').val(),
+			        exp_month: $('.card-expiry-month').val(),
+			        exp_year: $('.card-expiry-year').val()
+			      }, stripeResponseHandler);
+			    }
+			  });
+			  function stripeResponseHandler(status, response) {
+			    if (response.error) {
+			      $('.error')
+			        .removeClass('hide')
+			        .find('.alert')
+			        .text(response.error.message);
+			    } else {
+			      // token contains id, last4, and card type
+			      var token = response['id'];
+			      // insert the token into the form so it gets submitted to the server
+			      $form.find('input[type=text]').empty();
+			      $form.append("<input type='hidden' name='stripeToken' value='" + token + "'/>");
+			      $form.get(0).submit();
+			    }
+			  }
+			})
+		</script>
 
 </body>
 

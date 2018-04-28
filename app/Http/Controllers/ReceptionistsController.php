@@ -58,7 +58,7 @@ class ReceptionistsController extends Controller
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
             <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
-            }else{
+            }elseif(Auth::id()==$receptionist->created_by && $receptionist->isBanned()){
                 return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
                 <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
                 <a class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>'; 
@@ -82,7 +82,7 @@ class ReceptionistsController extends Controller
              $image = $request->file('avatar_image');
              $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
              $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
-             $request->avatar->storeAs('public/images',$filename);
+             $request->avatar_image->storeAs('public/images',$filename);
              $receptionist=User::create([
                 'name'=> $request->name,
                 'email'=>$request->email,
@@ -121,7 +121,7 @@ class ReceptionistsController extends Controller
     {
         $receptionist = User::findOrFail($id);
          if( $request->hasFile('avatar_image')) {
-            if (file_exists(public_path() . '/'.$receptionist->avatar_image)){
+            if (file_exists(public_path() . '/'.$receptionist->avatar_image) && $receptionist->avatar_image != "storage/images/avatar.jpg"){
                 unlink(public_path() . '/'.$receptionist->avatar_image) ;
             }
           

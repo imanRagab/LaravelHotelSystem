@@ -17,11 +17,11 @@ class CreateReservationsTable extends Migration
             
 
             $table->increments('id');
-            $table->integer('client_id')->nullable();;
-            $table->integer('room_id');
+            $table->integer('client_id')->nullable();;//foreign key 
+            $table->integer('room_id'); //foreign key 
             $table->integer('accompany_number');
             $table->integer('paid_price');
-            $table->integer('status');
+            $table->integer('status');//iman
             $table->timestamps();
 
 
