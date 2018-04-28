@@ -23,6 +23,13 @@ class Reservation extends Model
         return $this->belongsTo(Room::class);
     }
     /**
+     * relation one to meny
+     */
+    public function user()
+    {
+        return $this->hasOne(User::class);
+    }
+    /**
      * change format of price
      */
     public function getDollarPriceAttribute($value){

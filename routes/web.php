@@ -130,7 +130,11 @@ Route::get('register','Client\RegistersController@show')->name('register');
 /**
  * reservation routes, show client's reversation
  */
-Route::get('reservations/all','Reservations\ReservationsController@index');
+Route::get('reservations/all','Reservations\ReservationsController@index')->name('reservations');
+/**
+ * reservation routes, show client's reversation
+ */
+Route::get('reservations/all/get_all_reservation','Reservations\ReservationsController@get_all_reservation')->name('reservations/all');
 /**
  * reservation routes, show available rooms
  */

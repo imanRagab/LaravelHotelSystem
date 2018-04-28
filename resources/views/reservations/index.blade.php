@@ -11,7 +11,7 @@
         </tr>
         @foreach($rooms as $room)
         <tr>
-            <td>{{$room->room_num}}</td>
+            <td>{{$room->number}}</td>
             <td>{{$room->dollar_price}} $</td>
             <td>{{$room->capacity}}</td>
             <td>

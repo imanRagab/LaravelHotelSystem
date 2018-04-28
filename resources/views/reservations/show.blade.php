@@ -2,19 +2,38 @@
 
 @section('data')
 <div class="row col-md-8 ol-md-offset-4 ">
-    <table class="table">
+    <table class="table" id="reservations">
+        <thead>
         <tr>
-            <th>Room Number</th>
-            <th>Paid Price </th>
             <th>Accompany number</th>
+            <th>Paid Price </th>
+            <th>Room Number</th>
         </tr>
-        @foreach($reservations as $reservation)
-        <tr>
-            <td>{{$reservation->room->room_num}}</td>
-            <td>{{$reservation->dollar_price}} $</td>
-            <td>{{$reservation->accompany_number}}</td>
-        </tr>
-        @endforeach
+        </thead>
     </table>
 </div>
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    oTable = $('#reservations').DataTable({
+
+        "processing": true,
+
+        "serverSide": true,
+
+        "ajax": "{{ route('reservations/all') }}",
+
+        "columns": [
+            {data: 'accompany_number', name: 'accompany_number'},
+            {data: 'paid_price', name: 'paid_price'},
+            {data: 'number', name: 'number'},
+        ]
+
+    });
+  
+ 
+});
+
+</script>
 @endsection
