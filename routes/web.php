@@ -140,6 +140,11 @@ Route::get('reservations/all/get_all_reservation','Reservations\ReservationsCont
  */
 Route::get('reservations','ReservationsController@index');
 /**
+ * reservation routes, show available rooms
+ */
+Route::get('reservations/get_available_rooms','ReservationsController@get_available_rooms')->name('availablerooms');
+
+/**
  * reservation routes, create reservation
  */
 Route::get('reservations/{room}','ReservationsController@create');
