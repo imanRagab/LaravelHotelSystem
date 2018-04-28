@@ -26,8 +26,8 @@ class Kernel extends ConsoleKernel
     {
         // $schedule->command('inspire')
         //          ->hourly();
-       // $schedule->command('check:last-login')->daily();
-        $schedule->command('check:last-login')->everyMinute();
+        $schedule->command('check:last-login')->daily();
+       // $schedule->command('check:last-login')->everyMinute();
 
 
     }
