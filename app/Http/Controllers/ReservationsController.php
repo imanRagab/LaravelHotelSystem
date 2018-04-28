@@ -8,6 +8,7 @@ use App\Room;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Requests\ReservationRequest;
+use Yajra\Datatables\Datatables;
 use Stripe\Stripe;
 use Stripe\Customer;
 use Stripe\Charge;
@@ -70,11 +71,9 @@ class ReservationsController extends Controller
         return Datatables::of($AvailableRooms)
         ->addColumn('paid_price',function($AvailableRoom){
             return $AvailableRoom->dollar_price;
-        })->addColumn('number',function($AvailableRoom){
-            return $AvailableRoom->number;
-        })//->addColumn('action',function($AvailableRoom){
-            //return '<a href="/reservations/{{$AvailableRoom->id}}" class="btn btn-xs btn-primary">Make</a>';
-        //})
+        })->addColumn('action',function($AvailableRoom){
+            return '<a href="/reservations/'.$AvailableRoom->id.'" class="btn btn-xs btn-primary">Make</a>';
+        })
         ->make(true);
     }
 
