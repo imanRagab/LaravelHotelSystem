@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 
 
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class RoomsUpdateRequest extends FormRequest
 {
@@ -28,7 +29,7 @@ class RoomsUpdateRequest extends FormRequest
     {
         
         return [
-            'number'=> 'min:4|unique:rooms,number,'.$request->id  ,
+            'number' => Rule::unique('rooms')->ignore($request->number, 'number'),
             'price'=>'required|numeric'
         ];
     }

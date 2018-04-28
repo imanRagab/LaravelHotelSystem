@@ -86,6 +86,7 @@ class RegisterController extends Controller
             'gender' => $data['gender'],
             'country' => $data['country'],
             'avatar_image' => $data['avatar_image'],
+            'approved_state' => 0
             
         ]);
         $client->assignRole('client');

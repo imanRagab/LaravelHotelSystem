@@ -25,12 +25,10 @@ class UserUpdateRequest extends FormRequest
      */
     public function rules(Request $request)
     {
-        $id = $this->route('user');
-        $user = User::find($id);
+   
         return [
-
-            'national_id' => Rule::unique('users')->ignore($user->national_id, 'national_id'),
-            'email' => ['required',Rule::unique('users')->ignore($user->email, 'email')],
+            'national_id' => Rule::unique('users')->ignore($request->national_id, 'national_id'),
+            'email' => ['required',Rule::unique('users')->ignore($request->email, 'email')],
             'avatar_image' => 'mimes:jpeg,jpg'
         ];
     }
