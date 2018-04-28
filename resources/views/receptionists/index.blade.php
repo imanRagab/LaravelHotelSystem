@@ -2,9 +2,9 @@
 @extends('layouts.admin.master')
 
 @section('content')
-
+<br/>
 <a href="/receptionists/create"><button id="new" class="btn btn-success text-center"  ><i class="ionicons ion-android-create"></i>  Create Receptionist</button></a>
-<br><br>
+ <br/><br/>
 <table id="users" class="table table-hover table-condensed" style="width:100%">
 
     <thead>

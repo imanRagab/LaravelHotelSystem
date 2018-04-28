@@ -11,9 +11,9 @@
                 @role('admin')
                 <th>Created By</th>
                 @endrole
-                @role('admin|manager')
+                
                 <th>Action</th>
-                @endrole
+                
             </tr>
         </thead>
     </table>
@@ -58,20 +58,13 @@
             ajax: '{!! route('floors.data') !!}',
             columns: [
                 { data: 'name', name: 'name' },
-                { data: 'floor_num', name: 'floor_num' },
-                { data: 'manager_id', name: 'manager_id'},
-                @role('admin|manager')
-                {
-                    data: null,
-                    sortable: false,
-                    render: function (floor) { 
-                        editUrl = "/floors/" + floor.id + "/edit";
-                        delUrl = "/floors/" + floor.id;
-                        return '<a href=' + editUrl + ' class="btn btn-info">' + 'Edit' + '</a>'
-                        + ' <button onclick=delFloor("' + delUrl + '") ' + 'class="btn btn-danger">' + 'Delete' + '</button>'; 
-                    }
-                }
+                { data: 'number', name: 'number' },
+               
+                @role('admin')
+                {data: 'Manger_name', name: 'Manger_name'},
                 @endrole
+                {data: 'action', name: 'action'},
+              
 
         ]
             
@@ -79,4 +72,3 @@
     });
     </script>
     @endpush
-

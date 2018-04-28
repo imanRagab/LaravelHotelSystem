@@ -1,9 +1,8 @@
-git
 $(function () {
     $(document).on('click','.deleteAjax',function(){
         var userID = $(this).attr("user-id");
         var btn=$(this);
-        var resp = confirm("Are you sure you want to delete this receptionist?");
+        var resp = confirm("Are you sure you want to delete this User?");
         if (resp == true) {
             console.log(userID);
             $.ajax({

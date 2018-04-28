@@ -59,23 +59,14 @@
             serverSide: true,
             ajax: '{!! route('rooms.data') !!}',
             columns: [
-                { data: 'room_num', name: 'room_num' },
+                { data: 'number', name: 'number' },
                 { data: 'capacity', name: 'capacity' },
                 { data: 'price', name: 'price' },
-                {{--  { data: 'created_by', name: 'created_by' },  --}}
-                      
-                @role('admin|manager')
-                {
-                    data: null,
-                    sortable: false,
-                    render: function (room) { 
-                        editUrl = "/rooms/" + room.id + "/edit";
-                        delUrl = "/rooms/" + room.id;
-                        return '<a href=' + editUrl + ' class="btn btn-info">' + 'Edit' + '</a>'
-                        + ' <button onclick=delRoom("' + delUrl + '") ' + 'class="btn btn-danger delBtn">' + 'Delete' + '</button>'; 
-                    }
-                }
-            @endrole
+                @role('admin')
+                { data: 'Manager_name', name: 'Manager_name' }, 
+                @endrole
+                { data: 'action', name: 'action' }, 
+             
 
             ]
             
@@ -85,4 +76,3 @@
 
     </script>
     @endpush
-

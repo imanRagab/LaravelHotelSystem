@@ -14,6 +14,8 @@ use Auth;
 use App\User;
 use App\Room;
 use App\Reservation;
+use App\Notifications\greetClient;
+use App\Http\Requests\UserUpdateRequest;
 
 use App\Http\Requests\UpdateClientRequest;
 
@@ -125,7 +127,8 @@ class ClientsController extends Controller
         $client->approved_state = 1;
         $client->created_by = Auth::user()->id;
         $client->save();
-
+        $when = now()->addSeconds(10);
+        $client->notify((new greetClient)->delay($when));
         return "true";
     }
 
@@ -137,15 +140,70 @@ class ClientsController extends Controller
 
     }
 
+    /////////////////////////////////////
+
     public function getReservationsData(){
 
-        $reservation = Reservation::query()
-            ->select('name', 'room_num', 'accompany_number', 'paid_price')
+        $reservation = Auth::user()->hasRole('admin|manager') ? 
+            Reservation::query()
+            ->select('name', 'number', 'accompany_number', 'paid_price')
+            ->join('users','reservations.client_id','=','users.id')
+            ->join('rooms','reservations.room_id','=','rooms.id')
+            ->get()
+            : Reservation::query()
+            ->select('name', 'number', 'accompany_number', 'paid_price')
             ->join('users','reservations.client_id','=','users.id')
             ->join('rooms','reservations.room_id','=','rooms.id')
             ->where('users.created_by', Auth::user()->id)
             ->get();
 
-        return Datatables::of($reservation)->make(true);  
+        return Datatables::of($reservation)->addColumn('dollar_price', function ($reservation) {
+        
+            return $reservation->dollar_price;
+            
+        })->make(true);  
+        return Datatables::of(Reservation::all())->make(true);
+        
+    }
+
+        ////////////////////////////////////
+
+
+    public function editProfile($id)
+    {
+        $user=User::findOrFail($id);
+        return view('clients.editProfile',['user'=>$user]);
+    }
+
+    public function show($id)
+    {
+        $user=User::findOrFail($id);
+        return view('clients.showProfile',['user'=>$user]);
+    }
+    public function updateProfile($id,UserUpdateRequest  $request)
+    {
+        $user=User::findOrFail($id);
+        $user_edit=User::where('id',$id);
+        if( $request->hasFile('avatar_image')) {
+            if (file_exists(public_path() . '/'.$user_edit->avatar_image) && $user_edit->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$user_edit->avatar_image) ;
+            }
+            
+            $image = $request->file('avatar_image');
+            $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+            $request->avatar_image->storeAs('public/images',$filename);
+            $user_edit->update(['avatar_image' => 'storage/images/'.$filename]);
+        }
+
+        $user_edit->update(['name'=>$request->name,'email'=>$request->email,'mobile'=>$request->mobile,'national_id'=>$request->national_id]);
+        $validated = $request-> validated();
+        return redirect(route('users.show',['user'=>$id]));
+    
+    }
+    public function signOut()
+    {
+        Auth::logout();
+        return redirect(route('login'));
     }
 }

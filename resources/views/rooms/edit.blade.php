@@ -6,10 +6,10 @@
 
     <div class="form-group row box-body">
 
-        <label for="room_num" class="col-md-2 col-form-label text-md-right">Room Number</label>
+        <label for="number" class="col-md-2 col-form-label text-md-right">Room Number</label>
 
         <div class="col-md-6">
-            <input id="room_num" type="number" class="form-control" name="room_num" value={{$room->room_num}}>
+            <input id="number" type="number" class="form-control" name="number" value={{$room->number}}>
         </div>
     </div>
 

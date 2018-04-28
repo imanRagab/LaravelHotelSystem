@@ -24,7 +24,7 @@ class RoomsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'room_num'=> 'min:1000|unique:rooms' ,
+            'number'=> 'min:4|unique:rooms' ,
             'price'=>'required|numeric'
         ];
     }

@@ -7,7 +7,7 @@
 <table class="table">
     <tr class="row">
         <td class="col-md-3">Room Number</td>
-        <td class="col-md-3">{{$room->room_num}}</td>
+        <td class="col-md-3">{{$room->number}}</td>
         <td class="col-md-6"></td>
     </tr>
     <tr class="row">

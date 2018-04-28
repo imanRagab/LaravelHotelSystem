@@ -22,8 +22,7 @@ class ReservationsController extends Controller
      */
     public function index()
     {
-        $roomsAvailable = Room::all()->where('status',1);
-        return view('reservations.index',['user' => Auth::user(),'rooms' => $roomsAvailable]);
+        return view('reservations.index',['user' => Auth::user()]);
     }
 
     /**
@@ -64,6 +63,19 @@ class ReservationsController extends Controller
             "source" => $request->stripeToken
         ) );
         return redirect('/reservations/all');
+    }
+    public function get_available_rooms()
+    {
+        $AvailableRooms = Room::all()->where('status',1);
+        return Datatables::of($AvailableRooms)
+        ->addColumn('paid_price',function($AvailableRoom){
+            return $AvailableRoom->dollar_price;
+        })->addColumn('number',function($AvailableRoom){
+            return $AvailableRoom->number;
+        })//->addColumn('action',function($AvailableRoom){
+            //return '<a href="/reservations/{{$AvailableRoom->id}}" class="btn btn-xs btn-primary">Make</a>';
+        //})
+        ->make(true);
     }
 
 }

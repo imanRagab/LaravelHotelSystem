@@ -4,10 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Yajra\Datatables\Datatables;
+use App\Http\Requests\UserStoreRequest;
+use App\Http\Requests\UserUpdateRequest;
 use App\User;
 use Auth;
-//use Cog\Contracts\Ban\Bannable as BannableContract;
-//use Cog\Laravel\Ban\Traits\Bannable;
 
 class ReceptionistsController extends Controller
 {
@@ -22,7 +22,13 @@ class ReceptionistsController extends Controller
         $receptionists = User::role('receptionist')->get();
         
      if(Auth::user()->hasRole('admin')){
-        return Datatables::of($receptionists)->addColumn('Manger_name', function ($receptionist) {
+        return Datatables::of($receptionists)
+        ->addColumn('created_at', function ($receptionist) {
+        
+            return $receptionist->created_date;
+            
+        })
+        ->addColumn('Manger_name', function ($receptionist) {
         
             return $receptionist->user[0]->name;
             
@@ -42,12 +48,17 @@ class ReceptionistsController extends Controller
         })->make(true);
      }elseif(Auth::user()->hasRole('manager')){
         return Datatables::of($receptionists)
+        ->addColumn('created_at', function ($receptionist) {
+        
+            return $receptionist->created_date;
+            
+        })
         ->addColumn('action', function ($receptionist) {
             if (Auth::id()==$receptionist->created_by && $receptionist->isNotBanned()){
             return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
-            <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
+            <a  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
             <a  class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > Ban </i></a>';
-            }else{
+            }elseif(Auth::id()==$receptionist->created_by && $receptionist->isBanned()){
                 return '<a href="/receptionists/'.$receptionist->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
                 <a href="#"  class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax" user-id="'.$receptionist->id.'"> Delete </i> </a>
                 <a class="btn btn-xs btn-info" ><i class="fa fa-ban banOrunban" user-id="'.$receptionist->id.'" > UnBan </i></a>'; 
@@ -65,20 +76,20 @@ class ReceptionistsController extends Controller
     }
 
      //Store Post in database
-     public function store(Request $request)
+     public function store(UserStoreRequest $request)
      {
-         if( $request->hasFile('image')) {
-             $image = $request->file('image');
+         if( $request->hasFile('avatar_image')) {
+             $image = $request->file('avatar_image');
              $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
              $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
-             $request->image->storeAs('public/images',$filename);
+             $request->avatar_image->storeAs('public/images',$filename);
              $receptionist=User::create([
                 'name'=> $request->name,
                 'email'=>$request->email,
                 'password'=>bcrypt($request->password),
                 'created_by'=>Auth::id(),
-                'national_id'=>$request->number,
-                'avatar_image'=>$filename
+                'national_id'=>$request->national_id,
+                'avatar_image'=>'storage/images/'.$filename
    
             ]);
          }else{
@@ -87,7 +98,7 @@ class ReceptionistsController extends Controller
                 'email'=>$request->email,
                 'password'=>bcrypt($request->password),
                 'created_by'=>Auth::id(),
-                'national_id'=>$request->number,
+                'national_id'=>$request->national_id,
                 
    
             ]);
@@ -106,15 +117,18 @@ class ReceptionistsController extends Controller
         ]);
     }
     //update Receptionist in database
-    public function update(Request $request,  $id)
+    public function update(UserUpdateRequest $request,  $id)
     {
         $receptionist = User::findOrFail($id);
-         if( $request->hasFile('image')) {
-            unlink(public_path() . '/'.$receptionist->avatar_image);
-            $image = $request->file('image');
+         if( $request->hasFile('avatar_image')) {
+            if (file_exists(public_path() . '/'.$receptionist->avatar_image) && $receptionist->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$receptionist->avatar_image) ;
+            }
+          
+            $image = $request->file('avatar_image');
             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
-            $request->image->storeAs('public/images',$filename);
+            $request->avatar_image->storeAs('public/images',$filename);
             $receptionist->update(['avatar_image' => 'storage/images/'.$filename]);
         }
 

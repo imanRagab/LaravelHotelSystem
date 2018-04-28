@@ -2,25 +2,44 @@
 
 @section('data')
 <div class="row col-md-8 ol-md-offset-4 ">
-    <table class="table">
+    <table class="table" id="available_room">
+        <thead>
         <tr>
             <th>Room Number</th>
-            <th>Price</th>
             <th>Capacity</th>
+            <th>Price</th>
             <th>Actions</th>
         </tr>
-        @foreach($rooms as $room)
-        <tr>
-            <td>{{$room->room_num}}</td>
-            <td>{{$room->dollar_price}} $</td>
-            <td>{{$room->capacity}}</td>
-            <td>
-                <form method="get" action="/reservations/{{$room->id}}">
-                    <input type="submit" value="Make" class="btn btn-success"/>
-                </form>
-            </td>
-        </tr>
-        @endforeach
+        </thead>
     </table>
 </div>
-@endsection
+
+@stop
+
+@push('js')
+<script type="text/javascript">
+
+$(document).ready(function() {
+
+    oTable = $('#available_room').DataTable({
+
+        "processing": true,
+
+        "serverSide": true,
+
+        "ajax": "{{ route('availablerooms') }}",
+
+        "columns": [
+            {data: 'number', name: 'number'},
+            {data: 'capacity', name: 'capacity'},
+            {data: 'paid_price', name: 'paid_price'},
+            {data: 'action', name: 'action'},
+        ]
+
+    });
+  
+ 
+});
+
+</script>
+@endpush

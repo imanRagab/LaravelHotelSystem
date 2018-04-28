@@ -5,13 +5,18 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Room;
+use App\Floor;
 use App\User;
 use Yajra\Datatables\Datatables;
 use App\Http\Requests\RoomsStoreRequest;
+use App\Http\Requests\RoomsUpdateRequest;
+use Auth;
+
 class RoomsController extends Controller
 {
     public function index()
     {
+
         return view('rooms.index');
     }
 
@@ -21,21 +26,27 @@ class RoomsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
+/////////////////////////////////////////
 
      /////////////////////////////////////////////
      public function create()
      {
-         return view('rooms.create');
+         $floors=Floor::All();
+         return view('rooms.create',[
+            'floors' => $floors
+           ]);
      }
 /////////////////////////////////////////////////////
 
 
-public function store(Request $request)
+public function store(RoomsStoreRequest $request)
 {
         $room = new Room;
-        $room->room_num = $request->room_num;
+        $room->number = $request->number;
         $room->capacity=$request->capacity;
         $room->price=$request->price;
+        $room->created_by = Auth::user()->id;
+        $room->floor_id=$request->floor_id;
         $room->status=0;
         $room->save();
 
@@ -56,9 +67,10 @@ public function edit($id)
     }
 /////////////////////////////////////
 
-public function update(Request $request,Room $room)
+public function update(RoomsUpdateRequest $request,Room $room)
 {
-    $new_room = $request->only(['room_num', 'capacity','price']);
+    dd($request);
+    $new_room = $request->only(['number', 'capacity','price']);
     $room->update($new_room);
     return redirect('/rooms');     
 }
@@ -77,6 +89,46 @@ public function destroy(Room $room)
 /////////////////////////////////////////
 public function getData()
     {
-        return Datatables::of(Room::all())->make(true);
+        if(Auth::user()->hasRole('admin')){
+            return Datatables::of(Room::all())
+            ->addColumn('price', function ($room) {
+             
+                 return $room->dollar_price;
+                 
+             })
+           ->addColumn('Manager_name', function ($room) {
+        
+                return $room->user[0]->name;
+                
+            })
+            ->addColumn('action', function ($room) {
+                
+                    $delUrl = "/rooms/" . $room->id;
+                    return '<a href="/rooms/'.$room->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                    <button  onclick=delRoom("' . $delUrl . '") class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax"  > Delete </i> </button>
+                  ';
+                
+        })
+       
+        ->make(true);
+    }elseif(Auth::user()->hasRole('manager')){
+        return Datatables::of(Room::all())
+            ->addColumn('price', function ($room) {
+             
+                 return $room->dollar_price;
+                 
+             })
+          
+            ->addColumn('action', function ($room) {
+                if(Auth::id()==$room->created_by){
+                    $delUrl = "/rooms/" . $room->id;
+                    return '<a href="/rooms/'.$room->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                    <button  onclick=delRoom("' . $delUrl . '") class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax"  > Delete </i> </button>
+                  ';
+                } 
+        })
+       
+        ->make(true);
     }
+}
 }

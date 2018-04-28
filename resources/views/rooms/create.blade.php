@@ -7,10 +7,10 @@
 
 <div class="form-group row box-body">
 
-        <label for="room_num" class="col-md-2 col-form-label text-md-right">Room Number</label>
+        <label for="number" class="col-md-2 col-form-label text-md-right">Room Number</label>
 
         <div class="col-md-6">
-            <input id="room_num" type="number" class="form-control" name="room_num">
+            <input id="number" type="number" class="form-control" name="number">
         </div>
     </div>
 
@@ -31,6 +31,20 @@
                     <input id="price" type="number" class="form-control" name="price">
                 </div>
             </div>
+
+             <div class="form-group row box-body">
+        
+        <label for="floor_id" class="col-md-2 col-form-label text-md-right">Floor_id</label>
+
+        <div class="col-md-6">
+           <select value="_" name="floor_id">
+
+           @foreach($floors as $floor)
+                <option>{{$floor->id}}</option>
+           @endforeach
+           </select>
+        </div>
+    </div>
 
         <div class="form-group">
                 <div class="col-md-6 offset-md-4">

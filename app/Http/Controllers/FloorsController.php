@@ -15,6 +15,8 @@ class FloorsController extends Controller
 
     public function index()
     {
+       
+       
         return view('floors.index');
     }
     ////////////////////////////////////////////
@@ -31,8 +33,8 @@ public function store(FloorsStoreRequest $request)
         $floor = new Floor;
 
         $floor->name = $request->name;
-        $floor->floor_num = rand(1,9999);
-        $floor->manager_id = Auth::user()->id;
+        $floor->number= rand(1,9999);
+        $floor->created_by = Auth::user()->id;
         $floor->save();
     
         return redirect('floors'); 
@@ -49,9 +51,9 @@ public function store(FloorsStoreRequest $request)
     }
  //////////////////////////////////////////////////
 
-    public function update(Request $request,Floor $floor)
+    public function update( FloorsStoreRequest  $request,Floor $floor)
     {
-        $new_floor = $request->only(['name', 'floor_num']);
+        $new_floor = $request->only(['name', 'number']);
         $floor->update($new_floor);
         
         return redirect('/floors');         
@@ -60,11 +62,15 @@ public function store(FloorsStoreRequest $request)
 
     public function destroy(Floor $floor)
     {
-        $rooms = $floor->rooms;
-        foreach($rooms as $room){
-            if($room->status==1)
-                return "false";
+       
+        if($rooms = $floor->rooms){
+       
+          foreach($rooms as $room){
+              if($room->status==1)
+                  return "false";
+          }
         }
+    
         $floor->delete();
         return "true";
     }
@@ -72,6 +78,41 @@ public function store(FloorsStoreRequest $request)
 
     public function getData()
     {
-        return Datatables::of(Floor::all())->make(true);
+       
+        if(Auth::user()->hasRole('admin')){
+            return Datatables::of(Floor::all())
+         
+            ->addColumn('Manger_name', function ($floor) {
+            
+                return $floor->user[0]->name;
+                
+            })
+            
+            ->addColumn('action', function ($floor) {
+                $delUrl = "/floors/" . $floor->id;
+                return '<a href="/floors/'.$floor->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+            <button  onclick=delFloor("' . $delUrl . '") class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax"  > Delete </i> </button>
+          ';
+                     })
+        ->make(true);
+    }elseif(Auth::user()->hasRole('manager')){
+        return Datatables::of(Floor::all())
+         
+        ->addColumn('Manger_name', function ($floor) {
+        
+            return $floor->user[0]->name;
+            
+        })
+        ->addColumn('action', function ($floor) {
+            if(Auth::id()==$floor->created_by){
+                $delUrl = "/floors/" . $floor->id;
+                return '<a href="/floors/'.$floor->id.'/edit" class="btn btn-xs btn-primary"><i class="glyphicon glyphicon-edit"></i> Edit</a>
+                <button  onclick=delFloor("' . $delUrl . '") class="btn btn-xs btn-danger"><i class="glyphicon glyphicon-trash deleteAjax"  > Delete </i> </button>
+              ';
+            }
+         
+                 })
+    ->make(true); 
+    }
     }
 }
