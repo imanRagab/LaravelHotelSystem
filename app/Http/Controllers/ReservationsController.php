@@ -64,9 +64,7 @@ class ReservationsController extends Controller
             "description" => "Test payment.", 
             "source" => "tok_amex"
         ) );
-        $Reservations = Reservation::with('room')->where('client_id',Auth::user()->id)->get();
-        return view('reservations.show',['user' => Auth::user(),'reservations' =>$Reservations]);
-
+        return redirect('/reservations/all');
     }
 
 }

@@ -112,10 +112,6 @@ Route::get('reservations/{room}','ReservationsController@create');
  */
 Route::post('checkout','ReservationsController@store');
 
-/**
- * pay with card
- */
-Route::post('/charge', 'CheckoutController@store');
 
 
 
