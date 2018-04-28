@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoomsStoreRequest extends FormRequest
+class FloorsStoreRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,8 +24,7 @@ class RoomsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'number'=> 'min:1000|unique:rooms' ,
-            'price'=>'required|numeric'
+            'name'=> 'min:3' ,
         ];
     }
 }

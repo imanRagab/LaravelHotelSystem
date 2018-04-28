@@ -13,7 +13,7 @@ class RoomsStoreRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,7 @@ class RoomsStoreRequest extends FormRequest
     public function rules()
     {
         return [
-            'room_num'=> 'min:1000|unique:rooms' ,
+            'room_num'=> 'min:4|unique:rooms' ,
             'price'=>'required|numeric'
         ];
     }

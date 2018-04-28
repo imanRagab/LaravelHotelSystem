@@ -24,21 +24,6 @@ Route::get('index', function () {
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
-////////Floors Routes/////////////
-
-Route::get('floors','FloorsController@index')->middleware('auth');
-Route::patch('floors/{floor}', 'FloorsController@update')->middleware('auth');
-Route::get('floors/{floor}/edit','FloorsController@edit')->middleware('auth');
-Route::delete('floors/{floor}','FloorsController@destroy')->middleware('auth');
-Route::get('floors/create','FloorsController@create')->middleware('auth');
-Route::post('floors','FloorsController@store')->middleware('auth');
-Route::get('getFloorsData', 'FloorsController@getData')->name('floors.data')->middleware('auth');
-//////////Rooms Routes/////////////////////////
-Route::get('rooms','RoomsController@index')->middleware('auth');
-Route::get('getRoomsData', 'RoomsController@getData')->name('rooms.data')->middleware('auth');
-Route::post('update/{room}','RoomsController@update')->middleware('auth');
-Route::get('rooms/{room_num}/edit','RoomsController@edit')->middleware('auth');
-Route::delete('floors/{room_num}','RoomsController@destroy')->middleware('auth');
 
 /**************************************** Routes For Admin Only ***********************************/
 
@@ -82,6 +67,32 @@ Route::group(['middleware' => ['role:admin|manager']], function () {
     Route::post('receptionists/ban','ReceptionistsController@banOrunban');
     /** Delete Receptionist */
     Route::post('receptionists/delete','ReceptionistsController@destroy');
+   
+
+////////Floors Routes/////////////
+
+Route::get('floors','FloorsController@index')->middleware('auth');
+Route::patch('floors/{floor}', 'FloorsController@update')->middleware('auth');
+Route::get('floors/{floor}/edit','FloorsController@edit')->middleware('auth');
+Route::delete('floors/{floor}','FloorsController@destroy')->middleware('auth');
+Route::get('floors/create','FloorsController@create')->middleware('auth');
+Route::post('floors','FloorsController@store')->middleware('auth');
+Route::get('getFloorsData', 'FloorsController@getData')->name('floors.data')->middleware('auth');
+
+
+
+
+
+
+   
+     //////////Rooms Routes/////////////////////////
+Route::get('rooms','RoomsController@index')->middleware('auth');
+Route::get('getRoomsData', 'RoomsController@getData')->name('rooms.data')->middleware('auth');
+Route::patch('rooms/{room}', 'RoomsController@update')->middleware('auth');
+Route::get('rooms/{id}/edit','RoomsController@edit')->middleware('auth');
+Route::delete('rooms/{room}','RoomsController@destroy')->middleware('auth');
+Route::get('rooms/create','RoomsController@create')->middleware('auth');
+Route::post('rooms','RoomsController@store')->middleware('auth');
 });
 
 
