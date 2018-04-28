@@ -27,7 +27,7 @@
                 </div>
                 <div class="form-group">
                   <label for="exampleInputNationalID">National ID</label>
-                   <input id="exampleInputNationalId" pattern="[0-9]*" class="form-control" placeholder="Enter national id" type="text"/>
+                   <input id="exampleInputNationalId" pattern="[0-9]*" class="form-control" placeholder="Enter national id" type="text" name="national_id"/>
                 </div>
                 <div class="form-group">
                   <label for="exampleInputFile">Image Upload</label>
