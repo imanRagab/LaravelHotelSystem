@@ -1,48 +1,23 @@
 @extends('layouts.admin.master')
 @section('content')
 
-{{--
-<body>
- <table border="1">
- <thead>
-<th>    Room's Number </th>
-<th>  Room's capacity </th>
-<th> Room's Price</th>
-<th> Floor's Name</th>
 
-<th> Actions </th>
-</thead>
-<tbody>
-@foreach ($rooms as $room)
-<tr> 
-    <td>{{$room->room_num}}</td>
-    <td>{{$room->capacity}}</td>
-    <!-- //
-    price in dollar
-    // -->
-    <td>{{$room->floor->name}}</td>
-    @admin
-   <!-- if current logged in is Admin -->
-   <td>{{$room->user->Manager_name}}</td>
-    
-    <!-- if the manager created that floor -->
-    <td> <a href='rooms/{{$room->room_num}}/edit'> <input  value="edit" class="btn btn-primary"></a> </td>
-    <td> <a href='rooms/{{$room->room_num}}'>  <input  value="Delete" class="btn btn-primary"> </a> </td>
-
-</tr>
-@endforeach
-</tbody>
-
-</table>
-</body> --}}
-
+<a href="/rooms/create"><button class="btn btn-success">Create Room</button></a>
+<br><br>
 <table class="table table-bordered" id="rooms-table">
         <thead>
             <tr>
-                <th>Number</th>
-                <th>Capacity</th>
-                <th>Price</th>
+                <th> Room's Number</th>
+                <th>Room's capacity</th>
+                <th>Room's Price</th>
+                @role('admin')
+                <th>Created By</th>
+                @endrole
+                @role('admin|manager')
                 <th>Action</th>
+                @endrole
+
+                
             </tr>
         </thead>
     </table>
@@ -52,20 +27,52 @@
     @push('js')
     <script>
     $(function() {
+        HTMLElement.prototype.delRoom = function(delUrl){
+            var resp = confirm("Are you sure you want to delete this room?");
+            if (resp == true) {
+                $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+                }
+                });
+                $.ajax(
+                {
+                    url: delUrl,
+                    type: 'delete',
+                    dataType: "JSON",
+                    data: "{}",
+                    success: function (response)
+                    {
+                            if(!response){
+                                alert("Room is reserved it can't be deleted!");
+                            }
+                            else{
+                                alert("Room deleted successfully");
+                                window.location.href = "/rooms";
+                            }                       
+                    }                
+                });
+            }
+        }
         $('#rooms-table').DataTable({
             processing: true,
             serverSide: true,
             ajax: '{!! route('rooms.data') !!}',
             columns: [
-                { data: 'room_num', name: 'room_num' },
+                { data: 'number', name: 'number' },
                 { data: 'capacity', name: 'capacity' },
                 { data: 'price', name: 'price' },
-                { "data": null,
-            "defaultContent": "<button class='btn btn-info'>Edit</button> <button class='btn btn-danger'>Delete</button>"}
+                @role('admin')
+                { data: 'Manager_name', name: 'Manager_name' }, 
+                @endrole
+                { data: 'action', name: 'action' }, 
+             
+
             ]
             
         });
     });
+
+
     </script>
     @endpush
-
