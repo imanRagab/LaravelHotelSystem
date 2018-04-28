@@ -6,12 +6,17 @@ use Illuminate\Http\Request;
 use Spatie\Permission\Traits\HasRoles;
 use Yajra\Datatables\Datatables;
 use Illuminate\Support\Facades\DB;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 
 use Cache;
 use Auth;
 use App\User;
 use App\Room;
 use App\Reservation;
+
+use App\Http\Requests\UpdateClientRequest;
+
 
 class ClientsController extends Controller
 {
@@ -46,9 +51,25 @@ class ClientsController extends Controller
 
     }
 
-    public function update(Request $request, User $client)
+    public function update(UpdateClientRequest $request, User $client)
     {
-        $new_client = $request->all();;
+
+        if($request->avatar_image){
+            $new_client = $request->all();
+            $new_client['avatar_image'] = 'storage/images/' . $request->avatar_image;
+
+            if (file_exists(public_path() . '/'.$client->avatar_image) && $client->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$client->avatar_image) ;
+            }
+                        
+            $image = $request->file('avatar_image');
+            $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
+            $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
+            $request->avatar_image->storeAs('public/images',$filename);
+        }
+
+        else  $new_client = $request->except('avatar_image');        
+        
         $client->update($new_client);
 
         return redirect('clients/approved');
@@ -93,7 +114,7 @@ class ClientsController extends Controller
 
     public function getPendingData()
     {
-        $clients = User::role('client') -> select('name', 'email', 'mobile', 'country', 'gender') -> where('approved_state', 0) -> get();
+        $clients = User::role('client') -> select('id','name', 'email', 'mobile', 'country', 'gender') -> where('approved_state', 0) -> get();
         return Datatables::of($clients)->make(true);
     }
 
@@ -102,6 +123,7 @@ class ClientsController extends Controller
     public function approve(User $client){
 
         $client->approved_state = 1;
+        $client->created_by = Auth::user()->id;
         $client->save();
 
         return "true";

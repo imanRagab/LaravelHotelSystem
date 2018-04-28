@@ -2,135 +2,99 @@
 
 @section('content')
 
+@if ($errors->any())
+    <div class="alert alert-danger">
+        <ul>
+            @foreach ($errors->all() as $error)
+                <li>{{ $error }}</li>
+            @endforeach
+        </ul>
+    </div>
+@endif
+
+
 <div class="box box-primary">
     <div class="box-header with-border">
       <h3 class="box-title">Edit client</h3>
     </div>
     <!-- /.box-header -->
     <!-- form start -->
-    {{-- <form role="form" method="POST" action="/clients/{{$client->id}}">
-        {{ csrf_field() }}
-        {{ method_field('PATCH') }}
-      <div class="box-body">
-        <div class="form-group">
-          <label>Name</label>
-          <input type="text" class="form-control" value="{{$client->name}}" name="name">
-        </div>
-        <div class="form-group">
-          <label>Email</label>
-          <input type="email" class="form-control"  value="{{$client->email}}" name="email">
-        </div>
-      </div>
-      <!-- /.box-body -->
-
-      <div class="box-footer">
-        <button type="submit" class="btn btn-primary">Submit</button>
-      </div>
-    </form> --}}
-
-    <form role="form" method="POST" action="/clients/{{$client->id}}">
+    <form role="form" method="POST" action="/clients/{{$client->id}}" enctype="multipart/form-data">
       {{ csrf_field() }}
       {{ method_field('PATCH') }}
 
       <div class="form-group row box-body">
-          <label for="name" class="col-md-4 col-form-label text-md-right">{{ __('Name') }}</label>
+          <label for="name" class="col-md-4 col-form-label text-md-right">Name</label>
 
           <div class="col-md-6">
               <input id="name" type="text" class="form-control{{ $errors->has('name') ? ' is-invalid' : '' }}" name="name" value="{{ $client->name }}" required autofocus>
-
-              @if ($errors->has('name'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('name') }}</strong>
-                  </span>
-              @endif
           </div>
       </div>
 
       <div class="form-group row box-body">
-          <label for="email" class="col-md-4 col-form-label text-md-right">{{ __('E-Mail Address') }}</label>
+          <label for="email" class="col-md-4 col-form-label text-md-right">E-Mail Address</label>
 
           <div class="col-md-6">
               <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="{{ $client->email }}" required>
-
-              @if ($errors->has('email'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('email') }}</strong>
-                  </span>
-              @endif
           </div>
       </div>
 
       <div class="form-group row box-body">
-          <label for="mobile" class="col-md-4 col-form-label text-md-right">{{ __('Mobile') }}</label>
+          <label for="mobile" class="col-md-4 col-form-label text-md-right">Mobile</label>
 
           <div class="col-md-6">
               <input id="mobile" type="text" class="form-control{{ $errors->has('mobile') ? ' is-invalid' : '' }}" name="mobile" value="{{ $client->mobile }}" required autofocus>
-
-              @if ($errors->has('mobile'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('mobile') }}</strong>
-                  </span>
-              @endif
           </div>
       </div>
       <div class="form-group row box-body">
-          <label for="gender" class="col-md-4 col-form-label text-md-right">{{ __('Gender') }}</label>
+          <label for="gender" class="col-md-4 col-form-label text-md-right">Gender</label>
           <div class="col-md-2">
-              <label for="male" >{{ __('Male') }}</label>
+              <label for="male" >Male</label>
           </div>
           <div class="col-md-1" >
-              <input type="radio" class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" value="male" required autofocus {{$client->gender=="male"? 'selected':''}}>
+              <input type="radio" class=" {{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" value="male" required autofocus {{$client->gender=="male"? 'checked':''}}>
           </div>
           <div class="col-md-2">
-              <label for="female" >{{ __('Female') }}</label>
+              <label for="female" >Female</label>
           </div>
           <div class="col-md-1">    
-              <input  type="radio" class="form-control{{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" value="female" {{$client->gender=="female"? 'selected':''}}>                               
+              <input  type="radio" class="{ $errors->has('gender') ? ' is-invalid' : '' }}" name="gender" value="female" {{$client->gender=="female"? 'checked':''}}>                               
           </div>  
           <div>
-              @if ($errors->has('gender'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('gender') }}</strong>
-                  </span>
-              @endif
           </div>
       </div> 
 
       <div class="form-group row box-body">
-          <label for="national_id" class="col-md-4 col-form-label text-md-right">{{ __('Country') }}</label>
+          <label for="country" class="col-md-4 col-form-label text-md-right">Country</label>
 
           <div class="col-md-6">
-          <select id="national_id" name="national_id"  value="{{ old('national_id') }}" class="form-control{{ $errors->has('national_id') ? ' is-invalid' : '' }}" >
+          <select id="country" name="country" class="form-control{{ $errors->has('country') ? ' is-invalid' : '' }}" >
           <option ></option>
               @foreach($countries as $country)
-                  <option value="{{$country['calling_code']}}" value="{{ old('national_id')==$country['calling_code'] ? 'selected' : ''}}">{{$country['name']}}</option>
+                  <option {{ $client->country==$country['name'] ? 'selected' : ''}}>{{$country['name']}}</option>
               @endforeach    
           </select>
-
-              @if ($errors->has('mobile'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('national_id') }}</strong>
-                  </span>
-              @endif
           </div>
       </div>
+
       <div class="form-group row box-body">
-          <label for="avatar_image" class="col-md-4 col-form-label text-md-right">{{ __('Avatar_image') }}</label>
+        <label for="national_id" class="col-md-4 col-form-label text-md-right">National Id</label>
+
+        <div class="col-md-6">
+        <input id="national_id" name="national_id"  value="{{ $client->national_id }}" class="form-control{{ $errors->has('national_id') ? ' is-invalid' : '' }}" >
+    </div>
+      </div>
+      <div class="form-group row box-body">
+          <label for="avatar_image" class="col-md-4 col-form-label text-md-right">Avatar Image</label>
 
           <div class="col-md-6">
-              <input id="avatar_image" type="file" class="form-control{{ $errors->has('avatar_image') ? ' is-invalid' : '' }}" name="avatar_image" value="{{ old('avatar_image') }}">
-
-              @if ($errors->has('avatar_image'))
-                  <span class="invalid-feedback">
-                      <strong>{{ $errors->first('avatar_image') }}</strong>
-                  </span>
-              @endif
+              <input id="avatar_image" type="file" class="{{ $errors->has('avatar_image') ? ' is-invalid' : '' }}" name="avatar_image">
           </div>
       </div>
       <div class="form-group box-footer">
           <div class="col-md-6 offset-md-4">
               <button type="submit" class="btn btn-primary">
-                  {{ __('Register') }}
+                  Save
               </button>
           </div>
       </div>

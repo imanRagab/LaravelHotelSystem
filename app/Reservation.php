@@ -13,8 +13,7 @@ class Reservation extends Model
         'room_id',
         'accompany_number',
         'paid_price',
-        'client_id',               
-        
+        'client_id',             
     ];
 
     public function client(){

@@ -25,18 +25,23 @@ Route::get('/home', 'HomeController@index')->name('home');
 ////////Floors Routes/////////////
 
 Route::get('floors','FloorsController@index')->middleware('auth');
-Route::post('update/{floor}','FloorsController@update')->middleware('auth');
-Route::get('floors/{floor_num}/edit','FloorsController@edit')->middleware('auth');
-Route::delete('floors/{floor_num}','FloorsController@destroy')->middleware('auth');
+Route::patch('floors/{floor}', 'FloorsController@update')->middleware('auth');
+Route::get('floors/{floor}/edit','FloorsController@edit')->middleware('auth');
+Route::delete('floors/{floor}','FloorsController@destroy')->middleware('auth');
 Route::get('floors/create','FloorsController@create')->middleware('auth');
 Route::post('floors','FloorsController@store')->middleware('auth');
+Route::get('getFloorsData', 'FloorsController@getData')->name('floors.data')->middleware('auth');
 
 //////////Rooms Routes/////////////////////////
+
+
 Route::get('rooms','RoomsController@index')->middleware('auth');
 Route::get('getRoomsData', 'RoomsController@getData')->name('rooms.data')->middleware('auth');
-Route::post('update/{room}','RoomsController@update')->middleware('auth');
-Route::get('rooms/{room_num}/edit','RoomsController@edit')->middleware('auth');
-Route::delete('floors/{room_num}','RoomsController@destroy')->middleware('auth');
+Route::patch('rooms/{room}', 'RoomsController@update')->middleware('auth');
+Route::get('rooms/{id}/edit','RoomsController@edit')->middleware('auth');
+Route::delete('rooms/{room}','RoomsController@destroy')->middleware('auth');
+Route::get('rooms/create','RoomsController@create')->middleware('auth');
+Route::post('rooms','RoomsController@store')->middleware('auth');
 
 /////// Reservations Routes /////////////////////////
 
@@ -50,7 +55,7 @@ Route::get('reservations', 'ReservationsController@index');
 /////// Clients Routes /////////////////////////
 
 ///////////CRUD Routes /////////////////////////
-// Route::get('clients', 'ClientsController@index')->middleware('auth');
+
 Route::post('clients/delete', 'ClientsController@delete')->middleware('auth');
 Route::get('clients/{client}/edit', 'ClientsController@edit')->middleware('auth');
 Route::patch('clients/{client}', 'ClientsController@update')->middleware('auth');
@@ -62,6 +67,7 @@ Route::get('getPendingClientsData', 'ClientsController@getPendingData')->name('p
 Route::get('clients/manage', 'ClientsController@manage')->middleware('auth');
 Route::get('clients/reservations', 'ClientsController@showReservations')->middleware('auth');
 Route::get('getReservationsData', 'ClientsController@getReservationsData')->name('clientsReservations.data')->middleware('auth');
+
 ///////////////////////////////////////////////
 
 Route::get('register','Client\RegistersController@show')->name('register');
