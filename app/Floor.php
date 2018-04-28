@@ -8,9 +8,6 @@ class Floor extends Model
 {
     protected $fillable = [
         'name'
-       
-        
-        
     ];
 
 
@@ -18,6 +15,11 @@ class Floor extends Model
     {
         
         return $this->hasMany(User::class,  'id','created_by');
+    }
+
+    public function rooms()
+    {
+        return $this->hasMany('App\Room');
     }
 
 

@@ -13,6 +13,10 @@
         </thead>
     </table>
 </div>
+
+@stop
+
+@push('js')
 <script type="text/javascript">
 
 $(document).ready(function() {
@@ -38,4 +42,4 @@ $(document).ready(function() {
 });
 
 </script>
-@endsection
+@endpush

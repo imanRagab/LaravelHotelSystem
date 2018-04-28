@@ -12,8 +12,7 @@ class Room extends Model
         'capacity',
         'price',
         'status',
-        'created_by'
-        
+        'created_by'       
         
     ];
 

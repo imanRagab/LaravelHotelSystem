@@ -28,10 +28,10 @@
             serverSide: true,
             ajax: '{!! route('clientsReservations.data') !!}',
             columns: [
-                { data: 'client', name: 'client' },
+                { data: 'name', name: 'client' },
                 { data: 'accompany_number', name: 'accompany_number' },
-                { data: 'room->room_num', name: 'room' },
-                { data: 'paid_price', name: 'paid_price' }
+                { data: 'number', name: 'number' },
+                { data: 'dollar_price', name: 'dollar_price' }
             ]
         });        
     });
