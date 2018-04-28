@@ -27,12 +27,12 @@ Route::get('/home', 'HomeController@index')->name('home');
 ////////Floors Routes/////////////
 
 Route::get('floors','FloorsController@index')->middleware('auth');
-Route::post('update/{floor}','FloorsController@update')->middleware('auth');
-Route::get('floors/{floor_num}/edit','FloorsController@edit')->middleware('auth');
-Route::delete('floors/{floor_num}','FloorsController@destroy')->middleware('auth');
+Route::patch('floors/{floor}', 'FloorsController@update')->middleware('auth');
+Route::get('floors/{floor}/edit','FloorsController@edit')->middleware('auth');
+Route::delete('floors/{floor}','FloorsController@destroy')->middleware('auth');
 Route::get('floors/create','FloorsController@create')->middleware('auth');
 Route::post('floors','FloorsController@store')->middleware('auth');
-
+Route::get('getFloorsData', 'FloorsController@getData')->name('floors.data')->middleware('auth');
 //////////Rooms Routes/////////////////////////
 Route::get('rooms','RoomsController@index')->middleware('auth');
 Route::get('getRoomsData', 'RoomsController@getData')->name('rooms.data')->middleware('auth');

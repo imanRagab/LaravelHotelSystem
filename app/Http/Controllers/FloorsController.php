@@ -51,7 +51,7 @@ public function store(FloorsStoreRequest $request)
     }
  //////////////////////////////////////////////////
 
-    public function update(Request $request,Floor $floor)
+    public function update( FloorsStoreRequest  $request,Floor $floor)
     {
         $new_floor = $request->only(['name', 'number']);
         $floor->update($new_floor);

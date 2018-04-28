@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Room extends Model
 {
     protected $fillable = [
-        'room_num',
+        'number',
         'capacity',
         'price',
         'status',
@@ -25,7 +25,8 @@ class Room extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        
+        return $this->hasMany(User::class,  'id','created_by');
     }
     
 
