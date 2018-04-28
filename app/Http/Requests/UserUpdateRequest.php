@@ -29,7 +29,7 @@ class UserUpdateRequest extends FormRequest
         $user = User::find($id);
         return [
 
-            'national_id' => Rule::unique('users')->ignore($user->national_id, 'national_id'),
+            'national_id' => ['nullable',Rule::unique('users')->ignore($user->national_id, 'national_id')],
             'email' => ['required',Rule::unique('users')->ignore($user->email, 'email')],
             'avatar_image' => 'mimes:jpeg,jpg'
         ];

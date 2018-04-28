@@ -12,6 +12,7 @@ use App\Room;
 use App\Reservation;
 use App\Notifications\greetClient;
 use App\Http\Requests\UserUpdateRequest;
+use Illuminate\Database\Eloquent\Builder;
 
 class ClientsController extends Controller
 {
@@ -129,20 +130,19 @@ class ClientsController extends Controller
     public function updateProfile($id,UserUpdateRequest  $request)
     {
         $user=User::findOrFail($id);
-        $user_edit=User::where('id',$id);
         if( $request->hasFile('avatar_image')) {
-            if (file_exists(public_path() . '/'.$user_edit->avatar_image) && $user_edit->avatar_image != "storage/images/avatar.jpg"){
-                unlink(public_path() . '/'.$user_edit->avatar_image) ;
+            if (file_exists(public_path() . '/'.$user->avatar_image) && $user->avatar_image != "storage/images/avatar.jpg"){
+                unlink(public_path() . '/'.$user->avatar_image) ;
             }
             
             $image = $request->file('avatar_image');
             $imagename = pathinfo($image->getClientOriginalName(), PATHINFO_FILENAME);
             $filename = $imagename. '_'. time() . '.' . $image->getClientOriginalExtension();
             $request->avatar_image->storeAs('public/images',$filename);
-            $user_edit->update(['avatar_image' => 'storage/images/'.$filename]);
+            $user->update(['avatar_image' => 'storage/images/'.$filename]);
         }
 
-        $user_edit->update(['name'=>$request->name,'email'=>$request->email,'mobile'=>$request->mobile,'national_id'=>$request->national_id]);
+        $user->update(['name'=>$request->name,'email'=>$request->email,'mobile'=>$request->mobile,'national_id'=>$request->national_id]);
         $validated = $request-> validated();
         return redirect(route('users.show',['user'=>$id]));
     
