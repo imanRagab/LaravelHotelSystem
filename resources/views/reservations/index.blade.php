@@ -2,7 +2,7 @@
 
 @section('data')
 <div class="row col-md-8 ol-md-offset-4 ">
-    <table class="table" id="available_room">
+    <table class="table" id="rooms">
         <thead>
         <tr>
             <th>Room Number</th>
@@ -17,7 +17,7 @@
 
 $(document).ready(function() {
 
-    oTable = $('#available_room').DataTable({
+    oTable = $('#rooms').DataTable({
 
         "processing": true,
 
