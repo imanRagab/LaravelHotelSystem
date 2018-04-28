@@ -9,7 +9,9 @@ use App\Floor;
 use App\User;
 use Yajra\Datatables\Datatables;
 use App\Http\Requests\RoomsStoreRequest;
+use App\Http\Requests\RoomsUpdateRequest;
 use Auth;
+
 class RoomsController extends Controller
 {
     public function index()
@@ -24,6 +26,7 @@ class RoomsController extends Controller
      * @return \Illuminate\Http\JsonResponse
      */
 
+/////////////////////////////////////////
 
      /////////////////////////////////////////////
      public function create()
@@ -64,9 +67,9 @@ public function edit($id)
     }
 /////////////////////////////////////
 
-public function update(Request $request,Room $room)
+public function update(RoomsUpdateRequest $request,Room $room)
 {
-    
+    dd($request);
     $new_room = $request->only(['number', 'capacity','price']);
     $room->update($new_room);
     return redirect('/rooms');     

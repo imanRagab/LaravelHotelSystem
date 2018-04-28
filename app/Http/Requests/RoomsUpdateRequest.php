@@ -4,7 +4,10 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class RoomsStoreRequest extends FormRequest
+
+use Illuminate\Http\Request;
+
+class RoomsUpdateRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,10 +24,11 @@ class RoomsStoreRequest extends FormRequest
      *
      * @return array
      */
-    public function rules()
+    public function rules(Request $request)
     {
+        
         return [
-            'number'=> 'min:4|unique:rooms' ,
+            'number'=> 'min:4|unique:rooms,number,'.$request->id  ,
             'price'=>'required|numeric'
         ];
     }
